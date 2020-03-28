@@ -18,6 +18,7 @@ const server = http.createServer(app)
 const helper = require('./routes/util')
 const user = require('./routes/user')
 const hospital = require('./routes/hospital')
+const util = require('./routes/util')
 
 // MIDDLEWARE
 app.use(morgan('dev'))
@@ -43,8 +44,9 @@ app.use(passport.initialize())
 app.use(passport.session()) // calls the deserializeUser
 
 // Routes
-app.use('/user', user)
-app.use('/hospital', hospital)
+app.use('/api/user', user)
+app.use('/api/hospital', hospital)
+// app.use('/util', util)
 
 
 // Starting Server 

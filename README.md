@@ -14,4 +14,4 @@ The app was designed to help monitor the amount of healthcare equipment readily 
 > git clone https://github.com/KristoferKwan/Healthcare-Equipment-Monitor.git \
 > cd Healthcare-Equipment-Monitor \
 > npm install \
-> npm run start-server
+> npm run start

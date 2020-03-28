@@ -44,8 +44,8 @@ app.use(passport.initialize())
 app.use(passport.session()) // calls the deserializeUser
 
 // Routes
-app.use('/user', user)
-app.use('/hospital', hospital)
+app.use('/api/user', user)
+app.use('/api/hospital', hospital)
 // app.use('/util', util)
 
 

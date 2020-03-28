@@ -21,8 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"react-scripts start\" \"nodemon application/server/app.js\"",
-    "start-server": "nodemon application/server/app.js"
+    "dev": "concurrently \"react-scripts start\" \"nodemon app.js\"",
+    "start-server": "nodemon app.js"
   },
   "eslintConfig": {
     "extends": "react-app"

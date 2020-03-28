@@ -7,14 +7,16 @@ import {
 } from '@material-ui/icons'
 import {
   AppBar,
-  Container,
+  Box,
   CssBaseline,
+  Divider,
   Drawer,
   IconButton,
   Toolbar,
   Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
+import NavList from './NavList'
 
 const drawerWidth = 300
 
@@ -99,9 +101,7 @@ export default function DashboardLayout({
   const classes = useStyles()
   const [open, setOpen] = React.useState(true)
 
-  const handleToggleDrawer = () => {
-    setOpen(v => !v)
-  }
+  const handleToggleDrawer = () => setOpen(v => !v)
 
   return (
     <div className={classes.root}>
@@ -147,12 +147,12 @@ export default function DashboardLayout({
             <ChevronLeftIcon />
           </IconButton>
         </div>
+        <Divider variant={'fullwidth'} />
+        <NavList />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          {children}
-        </Container>
+        <Box margin={4}>{children}</Box>
       </main>
     </div>
   )

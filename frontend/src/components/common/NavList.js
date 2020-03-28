@@ -1,11 +1,13 @@
 import React from 'react'
-import { List, ListItem, ListItemText } from '@material-ui/core'
+import { List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core'
 import { BrowserRouter, Link } from 'react-router-dom'
+import { LocalHospital as LocalHospitalIcon } from '@material-ui/icons'
 
 const links = [
   {
     to: '/info',
-    label: 'Info'
+    label: 'Your Hospital',
+    icon: <LocalHospitalIcon />
   }
 ]
 
@@ -18,8 +20,9 @@ export default function NavList() {
     <BrowserRouter>
       <List>
         {!!links &&
-          links.map(({ label, ...linkProps }) => (
+          links.map(({ label, icon, ...linkProps }) => (
             <ListItemLink {...linkProps}>
+              <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={label} />
             </ListItemLink>
           ))}

@@ -13,12 +13,13 @@ import {
   Drawer,
   IconButton,
   Toolbar,
-  Typography
+  Typography,
+  Container
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import NavList from './NavList'
 
-const drawerWidth = 300
+const drawerWidth = 240
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -152,7 +153,7 @@ export default function DashboardLayout({
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Box margin={4}>{children}</Box>
+        <Container className={classes.container}>{children}</Container>
       </main>
     </div>
   )

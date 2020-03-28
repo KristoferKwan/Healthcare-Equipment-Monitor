@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core'
-import { BrowserRouter, Link } from 'react-router-dom'
+import { BrowserRouter, NavLink } from 'react-router-dom'
 import { LocalHospital as LocalHospitalIcon } from '@material-ui/icons'
 
 const links = [
@@ -11,20 +11,21 @@ const links = [
   }
 ]
 
-const ListItemLink = props => {
-  return <ListItem button component={Link} {...props} />
-}
-
 export default function NavList() {
   return (
     <BrowserRouter>
       <List>
         {!!links &&
-          links.map(({ label, icon, ...linkProps }) => (
-            <ListItemLink {...linkProps}>
+          links.map(({ label, icon, to }) => (
+            <ListItem
+              button
+              component={NavLink}
+              to={to}
+              activeClassName={'Mui-selected'}
+            >
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={label} />
-            </ListItemLink>
+            </ListItem>
           ))}
       </List>
     </BrowserRouter>

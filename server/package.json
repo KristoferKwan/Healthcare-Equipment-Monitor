@@ -18,12 +18,7 @@
     "passport-local": "^1.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "concurrently \"react-scripts start\" \"nodemon app.js\"",
-    "start-server": "nodemon app.js"
+    "start": "nodemon app.js"
   },
   "eslintConfig": {
     "extends": "react-app"

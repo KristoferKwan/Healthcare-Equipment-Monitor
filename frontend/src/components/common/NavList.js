@@ -18,10 +18,9 @@ export default function NavList() {
         {links.map(({ label, icon, to }) => (
           <ListItem
             button
-            component={NavLink}
-            to={to}
+            component={'a'}
+            href={to}
             key={to}
-            activeClassName={'Mui-selected'}
           >
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={label} />

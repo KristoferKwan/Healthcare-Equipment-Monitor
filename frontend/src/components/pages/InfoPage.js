@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Typography } from '@material-ui/core'
-
-import axios from 'axios'
-import { useHospitalInfo } from '../../functions/useAPI'
+import { Grid, Typography, Box } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
-import { useAsync } from 'react-use'
+
+import { useHospitalInfo } from '../../functions/useAPI'
+import SupplyTable from '../../components/common/SupplyTable'
 
 export default function InfoPage() {
   let { id } = useParams()
 
-  const state = useState(useHospitalInfo(id))
+  const state = useHospitalInfo(id)
   const [hospitalInfo, setHospitalInfo] = useState(null)
   useEffect(() => {
     if (!state.loading && !state.error) {
-      setHospitalInfo(prev => ({
-        ...prev,
-        ...state
-      }))
+      setHospitalInfo({ ...state.value })
     }
   }, [state])
   console.log(hospitalInfo)
 
   return (
     <>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant={'h4'}>Hospital ID: {id}</Typography>
-        </Grid>
+      <Box paddingBottom={3}>
+        <Typography variant={'h4'}>Hospital ID: {id}</Typography>
+      </Box>
+      <Grid item container xs={12} md={6}>
+        {!!hospitalInfo && !!hospitalInfo.supplies && (
+          <SupplyTable supplyEntry={hospitalInfo.supplies[0]} />
+        )}
       </Grid>
     </>
   )

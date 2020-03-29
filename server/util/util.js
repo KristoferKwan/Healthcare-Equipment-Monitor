@@ -25,6 +25,33 @@ const getHospital = async (id) => {
   }
 }
 
+const getHospitalInfo = async (id) => {
+  try {
+    console.log(id);
+    const hospital = await new Promise((resolve, reject) => {
+      console.log ("made it in here!")
+      const h =HospitalInfo.findOne({ hospitalId: id }, (err, res) => {
+        if (!res) {
+          console.log(err)
+          throw('HospitalInfo could not be found')
+        }else {
+          console.log(res)
+          return res
+        }
+      })
+      resolve(h)
+    })
+    return new Promise(resolve => {
+      resolve(hospital)
+    })
+  } catch (error) {
+    return new Promise((resolve, reject) => {
+      reject(error)
+    })
+  }
+}
+
+
 const makeHospital = async (id, name, state, county, longitude, latitude, supplies, telephone="") => {
   try {
     await new Promise((resolve, reject) => {
@@ -84,5 +111,6 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
 
 module.exports = {
   getHospital: getHospital,
+  getHospitalInfo: getHospitalInfo,
   makeHospital: makeHospital
 }

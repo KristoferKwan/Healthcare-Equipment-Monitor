@@ -1,21 +1,20 @@
 const axios = require("axios").default;
 //const json = require("../mockdata/hospitalData.json");
 const helper = require("../util/util");
+const mockDataGenerator = require("../mockdata/mockdataGenerator");
 
-const getPublicHealthDepartments = json => {
+const getPublicHealthDepartments = () => {
   axios
     .get(
       "https://opendata.arcgis.com/datasets/1b919b0ff5f44d05bcb374591206f757_0.geojson"
     )
     .then(function(response) {
-      console.log(response.data.features[0]);
+      //console.log(response.data.features[0]);
       //console.log("yay");
-      for (var x = 0; x < 5; ++x) {
-        const jsonEntry = x * 7;
-        const supplies = [];
-        for (var supplyX = jsonEntry; jsonEntry + 7; ++supplyX) {
-          supplies.push(json[supplyX]);
-        }
+      //3699
+      for (var x = 0; x < 3699; ++x) {
+        //const jsonEntry = x * 7;
+        const supplies = mockDataGenerator.generateHospitalData(1);
         const id = response.data.features[x].properties.ID;
         const name = response.data.features[x].properties.NAME;
         const longitude = response.data.features[x].properties.X;

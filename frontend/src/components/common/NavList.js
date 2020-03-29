@@ -15,18 +15,18 @@ export default function NavList() {
   return (
     <BrowserRouter>
       <List>
-        {!!links &&
-          links.map(({ label, icon, to }) => (
-            <ListItem
-              button
-              component={NavLink}
-              to={to}
-              activeClassName={'Mui-selected'}
-            >
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItem>
-          ))}
+        {links.map(({ label, icon, to }) => (
+          <ListItem
+            button
+            component={NavLink}
+            to={to}
+            key={to}
+            activeClassName={'Mui-selected'}
+          >
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText primary={label} />
+          </ListItem>
+        ))}
       </List>
     </BrowserRouter>
   )

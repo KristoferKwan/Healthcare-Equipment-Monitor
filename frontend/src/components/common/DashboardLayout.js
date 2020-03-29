@@ -15,8 +15,11 @@ import {
   Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
-import NavList from './NavList'
-import { BrowserRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useToggle } from 'react-use'
+
+import { useUserContext } from '../../contexts/UserContext'
+import Sidebar from './Sidebar'
 
 const drawerWidth = 240
 
@@ -26,13 +29,6 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     paddingRight: 24 // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -55,26 +51,6 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1
   },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(7)
-    }
-  },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
@@ -92,15 +68,10 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function DashboardLayout({
-  title,
-  NavigationComponent,
-  children
-}) {
+export default function DashboardLayout({ children }) {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(true)
-
-  const handleToggleDrawer = () => setOpen(v => !v)
+  const [user, setUser] = useUserContext()
+  const [open, handleToggleDrawer] = useToggle(true)
 
   return (
     <div className={classes.root}>
@@ -129,33 +100,17 @@ export default function DashboardLayout({
           >
             Healthcare Equipment Monitor
           </Typography>
-          <BrowserRouter>
-            <IconButton
-              component={'a'}
-              href={'/map'}
-              color={'inherit'}
-              className={classes.menuButton}
-            >
-              <MapIcon />
-            </IconButton>
-          </BrowserRouter>
+          <IconButton
+            component={Link}
+            to={'/map'}
+            color={'inherit'}
+            className={classes.menuButton}
+          >
+            <MapIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleToggleDrawer}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider variant={'fullWidth'} />
-        <NavList />
-      </Drawer>
+      <Sidebar open={open} onToggleDoor={handleToggleDrawer} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <div className={classes.container}>{children}</div>

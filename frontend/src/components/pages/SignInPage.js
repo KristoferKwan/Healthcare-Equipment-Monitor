@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
   Avatar,
@@ -14,6 +14,10 @@ import {
 
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
+import { useHistory } from 'react-router-dom'
+
+import { useSignIn } from '../../functions/useAPI'
+import { useUserContext } from '../../contexts/UserContext'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,37 +39,45 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function SignIn(props) {
+export default function SignInPage() {
   const classes = useStyles()
+  const history = useHistory()
 
   const [values, setValues] = useState({
-    hospitalId: null,
-    username: null,
-    password: null
+    username: '',
+    password: ''
   })
+
+  const [state, signIn] = useSignIn(values)
+  const [user, setUser] = useUserContext()
+
+  useEffect(() => {
+    if (!!user && !!user.hospitalId) {
+      history.push(`/info/${user.hospitalId}`)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!state.loading && !state.error && !!state.value) {
+      let { username, hospitalId } = state.value
+      setUser({ username, hospitalId })
+      console.log(user)
+      history.push(`/info/${hospitalId}`)
+    } else {
+      console.log(state)
+    }
+  }, [state])
 
   const handleOnChange = key => event => {
     let value = event.target.value
-    setValues(prev => ({...prev, [key]: value}))
+    setValues(prev => ({ ...prev, [key]: value }))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault()
-    axios.post('/api/user/login', {
-      username: values.username,
-      password: values.password
-    }).then(response => {
-      console.log("response", response)
-      if (response.status === 200) {
-        window.location = '/info/' + response.data.hospitalId.toString()
-      }
-    }).catch(error => {
-      this.setState({
-        error: true,
-        message: "Username or Password Invalid"
-      })
-    })
+    signIn()
   }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -77,21 +89,7 @@ export default function SignIn(props) {
           Sign in
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-            {/* <Grid item xs={12}>
-              <TextField
-                autoComplete="hospitalId"
-                name="hospitalId"
-                variant="outlined"
-                required
-                fullWidth
-                id="hospitalId"
-                label="Hospital Id"
-                autofocus
-                value={values.hospitalId}
-                onChange={handleOnChange('hospitalId')}
-              />
-            </Grid> */}
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

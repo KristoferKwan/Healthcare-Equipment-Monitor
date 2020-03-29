@@ -23,7 +23,11 @@ export default function InfoPage() {
       </Box>
       <Grid item container xs={12} sm={5}>
         {!!hospitalInfo && !!hospitalInfo.supplies && (
-          <SupplyTable supplyEntry={hospitalInfo.supplies[0]} />
+          <SupplyTable
+            supplyEntry={
+              hospitalInfo.supplies[hospitalInfo.supplies.length - 1]
+            }
+          />
         )}
       </Grid>
     </>

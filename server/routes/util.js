@@ -1,12 +1,17 @@
 const helper = require("../util/util");
 const express = require("express");
 const router = express.Router();
-
-router.get("/mockdata", async (req, res) => {
+const hospitalHelper = require("../requests/publicHealthDepartments");
+//const json = require("../mockdata/hospitalData.json");
+var fs = require("fs");
+//console.log(json);
+var json = JSON.parse(fs.readFileSync("../mockdata/hospitalData.json", "utf8"));
+router.get("/hospitalHelper", async (req, res) => {
   try {
+    hospitalHelper.getPublicHealthDepartments(json);
     return res.json({
       status: "success",
-      message: "mockdata route is currently in progress.."
+      message: "hospital stuff"
     });
   } catch (error) {
     res.status(404);

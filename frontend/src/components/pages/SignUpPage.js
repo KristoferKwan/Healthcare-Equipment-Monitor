@@ -51,19 +51,24 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('https://localhost:8080/api/user/signup', {
-      username: values.username,
-      password: values.password,
-      hospital: values.hospitalId
-    }).then(response => {
-      if (response.username) {
-        // update App.js state
-        // update the state to redirect to home
-        window.location = '/info/'
-      }
-    }).catch(error => {
-      window.alert(error)
-    })
+    try{
+      console.log(values.userId);
+      axios.post('/api/user/signup', {
+        username: values.userId,
+        password: values.password,
+        hospitalId: values.hospitalId
+      }).then(response => {
+        if (response.username) {
+          // update App.js state
+          // update the state to redirect to home
+          window.location = '/info/'
+        }
+      }).catch(error => {
+        window.alert(error)
+      })
+    } catch(error){
+
+    }
   }
 
   return (
@@ -83,6 +88,7 @@ export default function SignUp() {
                 autoComplete="hospitalId"
                 name="hospitalId"
                 variant="outlined"
+                type="number"
                 required
                 fullWidth
                 id="hospitalId"

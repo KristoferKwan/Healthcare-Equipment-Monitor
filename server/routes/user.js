@@ -19,13 +19,13 @@ router.post('/signup',(req, res) => {
       })
     }
     else {
-      console.log("now adding the user...")
-      const hospital = await helper.getHospital(req.body.hospitalId)
-      
+      const hospitalId = parseInt(req.body.hospitalId)
+      const hospital = await helper.getHospital(hospitalId)
+      console.log(hospital)
       const newUser = new User({
         username: username,
         password: password,
-        hospital: hospital._id
+        hospitalId: parseInt(hospital._id)
       })
       console.log('New User:', newUser);
       newUser.save((err, savedUser) => {

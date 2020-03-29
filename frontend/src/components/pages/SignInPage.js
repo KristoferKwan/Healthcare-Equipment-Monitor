@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import axios from 'axios'
 import {
   Avatar,
   Button,
@@ -48,7 +49,23 @@ export default function SignIn(props) {
     setValues(prev => ({...prev, [key]: value}))
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    axios.post('/api/user/login', {
+      username: values.username,
+      password: values.password
+    }).then(response => {
+      console.log("response", response)
+      if (response.status === 200) {
+        window.location = '/info/' + response.data.hospitalId.toString()
+      }
+    }).catch(error => {
+      this.setState({
+        error: true,
+        message: "Username or Password Invalid"
+      })
+    })
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -61,7 +78,7 @@ export default function SignIn(props) {
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 autoComplete="hospitalId"
                 name="hospitalId"
@@ -74,7 +91,7 @@ export default function SignIn(props) {
                 value={values.hospitalId}
                 onChange={handleOnChange('hospitalId')}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

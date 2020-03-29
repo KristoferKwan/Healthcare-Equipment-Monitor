@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectID;
 const helper = require('../util/util');
 const User = require('../database/models/user')
 
-router.post('/',(req, res) => {
+router.post('/signup',(req, res) => {
   console.log('user signup');
   //const { username, password, firstName, lastName, profileImage, email, phoneNumber, roles} = req.body
   console.log(req.body);

@@ -10,7 +10,19 @@ const countySchema = new Schema({
   hospitals: [{
       type: Schema.Types.ObjectId,
       ref: 'HospitalInfo'
-  }]
+  }],
+  location: {
+    longitude: {
+      type: Number,
+      unique: false,
+      required: true 
+    },
+    latitude: {
+      type: Number,
+      unique: false,
+      required: true
+    }
+  }
 });
 
 const County = mongoose.model('County', countySchema)

@@ -7,14 +7,12 @@ import {
 } from '@material-ui/icons'
 import {
   AppBar,
-  Box,
   CssBaseline,
   Divider,
   Drawer,
   IconButton,
   Toolbar,
-  Typography,
-  Container
+  Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import NavList from './NavList'
@@ -147,7 +145,7 @@ export default function DashboardLayout({
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <Divider variant={'fullwidth'} />
+        <Divider variant={'fullWidth'} />
         <NavList />
       </Drawer>
       <main className={classes.content}>

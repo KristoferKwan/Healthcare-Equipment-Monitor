@@ -2,14 +2,13 @@ import React from 'react'
 import {
   Avatar,
   Button,
+  Checkbox,
   Container,
   CssBaseline,
-  TextField,
   FormControlLabel,
-  Checkbox,
-  Link,
   Grid,
-  Box,
+  Link,
+  TextField,
   Typography
 } from '@material-ui/core'
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'

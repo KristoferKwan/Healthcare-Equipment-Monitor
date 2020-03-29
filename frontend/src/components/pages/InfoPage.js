@@ -15,14 +15,13 @@ export default function InfoPage() {
       setHospitalInfo({ ...state.value })
     }
   }, [state])
-  console.log(hospitalInfo)
 
   return (
     <>
       <Box paddingBottom={3}>
         <Typography variant={'h4'}>Hospital ID: {id}</Typography>
       </Box>
-      <Grid item container xs={12} md={4}>
+      <Grid item container xs={12} sm={5}>
         {!!hospitalInfo && !!hospitalInfo.supplies && (
           <SupplyTable supplyEntry={hospitalInfo.supplies[0]} />
         )}

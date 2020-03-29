@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography, Container, Divider } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 
 const sections = [
   {
@@ -28,7 +28,7 @@ export default function SupplyTable({ supplyEntry }) {
   return (
     <Grid container spacing={2}>
       {sections.map(({ label, key }) => (
-        <Grid item xs={12}>
+        <Grid item xs={12} key={key}>
           <Grid container spacing={4} justify={'space-between'}>
             <Grid item xs={8} md={'auto'}>
               <Typography variant={'h6'}>{label}</Typography>

@@ -1,17 +1,19 @@
 const Hospital = require('../database/models/hospital')
 const HospitalInfo = require('../database/models/hospitalInfo')
 
-const getHospital = async (hospital) => {
+const getHospital = async (id) => {
   try {
+    console.log(id);
     const hospital = await new Promise((resolve, reject) => {
-      Hospital.findOne({ _id: hospital }, (err, res) => {
+      const h =Hospital.findOne({ _id: id }, (err, res) => {
         if (!res) {
           console.log(err)
-          reject('Hospital could not be found')
-        } else {
-          resolve(res)
+          throw('Hospital could not be found')
+        }else {
+          return res
         }
       })
+      resolve(h)
     })
     return new Promise(resolve => {
       resolve(hospital)

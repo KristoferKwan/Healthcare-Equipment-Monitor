@@ -20,7 +20,7 @@ router.post('/',(req, res) => {
     }
     else {
       console.log("now adding the user...")
-      const hospital = await helper.getHospital()
+      const hospital = await helper.getHospital(req.body.hospitalId)
       
       const newUser = new User({
         username: username,
@@ -39,6 +39,22 @@ router.post('/',(req, res) => {
     }
   })
 })
+
+router.post(
+  '/login',
+  function (req, res, next) {
+    console.log('routes/user.js, login, req.body: ');
+    console.log(req.body)
+    next()
+  },
+  passport.authenticate('local'),
+  (req, res) => {
+    console.log('logged in', req.user);
+    var userInfo = req.user
+    console.log("userinfo: ", userInfo);
+    res.send(userInfo);
+  }
+)
 
 router.post('/logout', (req, res) => {
   if (req.user) {

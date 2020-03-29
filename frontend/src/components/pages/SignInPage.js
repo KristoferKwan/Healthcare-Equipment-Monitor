@@ -39,7 +39,7 @@ export default function SignIn(props) {
 
   const [values, setValues] = useState({
     hospitalId: null,
-    userId: null,
+    username: null,
     password: null
   })
 
@@ -80,12 +80,12 @@ export default function SignIn(props) {
                 variant="outlined"
                 required
                 fullWidth
-                id="userId"
-                label="User Id"
-                name="userId"
-                autoComplete="userId"
-                value={values.userId}
-                onChange={handleOnChange('userId')}
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                value={values.username}
+                onChange={handleOnChange('username')}
               />
             </Grid>
             <Grid item xs={12}>

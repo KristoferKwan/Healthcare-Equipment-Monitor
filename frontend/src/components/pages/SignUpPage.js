@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import {
   Avatar,
   Button,
@@ -48,7 +49,22 @@ export default function SignUp() {
     setValues(prev => ({...prev, [key]: value}))
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios.post('https://localhost:8080/api/user/signup', {
+      username: values.username,
+      password: values.password,
+      hospital: values.hospitalId
+    }).then(response => {
+      if (response.username) {
+        // update App.js state
+        // update the state to redirect to home
+        window.location = '/info/'
+      }
+    }).catch(error => {
+      window.alert(error)
+    })
+  }
 
   return (
     <Container component="main" maxWidth="xs">

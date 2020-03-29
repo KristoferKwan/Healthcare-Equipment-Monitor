@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, Typography } from '@material-ui/core'
 
 import axios from 'axios'
@@ -9,8 +9,17 @@ import { useAsync } from 'react-use'
 export default function InfoPage() {
   let { id } = useParams()
 
-  let state = useHospitalInfo(id)
-  console.log(state)
+  const state = useState(useHospitalInfo(id))
+  const [hospitalInfo, setHospitalInfo] = useState(null)
+  useEffect(() => {
+    if (!state.loading && !state.error) {
+      setHospitalInfo(prev => ({
+        ...prev,
+        ...state
+      }))
+    }
+  }, [state])
+  console.log(hospitalInfo)
 
   return (
     <>

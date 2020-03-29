@@ -35,7 +35,6 @@ const getAllHospitals = async () => {
           throw('Hospitals could not be found')
         }else {
           var hospitalMap = []
-          console.log(hospitals)
           await new Promise((resolve) => { 
             hospitals.forEach((hospital) => {
               const hospitalInfo = {
@@ -44,11 +43,9 @@ const getAllHospitals = async () => {
                 location: hospital.location      
               }
               hospitalMap.push(hospitalInfo)
-              console.log(hospitalMap)
             })
           resolve()
          })
-          console.log("here!", hospitalMap)
           resolve(hospitalMap)
         }
       })

@@ -17,6 +17,7 @@ app.options('*', cors())
 const server = http.createServer(app)
 const user = require('./routes/user')
 const hospital = require('./routes/hospital')
+const county = require('./routes/county')
 const util = require('./routes/util')
 
 // MIDDLEWARE
@@ -27,6 +28,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
 
 // Sessions
 app.use(
@@ -44,6 +46,7 @@ app.use(passport.session()); // calls the deserializeUser
 
 // Routes
 app.use('/api/user', user)
+app.use('/api/county', county)
 app.use('/api/hospital', hospital)
 app.use('/api/util', util)
 

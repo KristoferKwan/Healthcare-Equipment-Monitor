@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import NavList from './NavList'
+import { BrowserRouter, Link } from 'react-router-dom'
 
 const drawerWidth = 240
 
@@ -128,9 +129,16 @@ export default function DashboardLayout({
           >
             Healthcare Equipment Monitor
           </Typography>
-          <IconButton color={'inherit'} className={classes.menuButton}>
-            <MapIcon />
-          </IconButton>
+          <BrowserRouter>
+            <IconButton
+              component={'a'}
+              href={'/map'}
+              color={'inherit'}
+              className={classes.menuButton}
+            >
+              <MapIcon />
+            </IconButton>
+          </BrowserRouter>
         </Toolbar>
       </AppBar>
       <Drawer

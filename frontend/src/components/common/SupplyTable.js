@@ -11,8 +11,12 @@ const sections = [
     key: 'masks'
   },
   {
-    label: 'Eyewear',
-    key: 'eyewear'
+    label: 'Goggles',
+    key: 'goggles'
+  },
+  {
+    label: 'Gloves',
+    key: 'gloves'
   },
   {
     label: 'Gowns',

@@ -1,17 +1,19 @@
 const Hospital = require('../database/models/hospital')
 const HospitalInfo = require('../database/models/hospitalInfo')
 
-const getHospital = async (hospital) => {
+const getHospital = async (id) => {
   try {
+    console.log(id);
     const hospital = await new Promise((resolve, reject) => {
-      Hospital.findOne({ _id: hospital }, (err, res) => {
+      const h =Hospital.findOne({ _id: id }, (err, res) => {
         if (!res) {
           console.log(err)
-          reject('Hospital could not be found')
-        } else {
-          resolve(res)
+          throw('Hospital could not be found')
+        }else {
+          return res
         }
       })
+      resolve(h)
     })
     return new Promise(resolve => {
       resolve(hospital)
@@ -22,6 +24,33 @@ const getHospital = async (hospital) => {
     })
   }
 }
+
+const getHospitalInfo = async (id) => {
+  try {
+    console.log(id);
+    const hospital = await new Promise((resolve, reject) => {
+      console.log ("made it in here!")
+      const h =HospitalInfo.findOne({ hospitalId: id }, (err, res) => {
+        if (!res) {
+          console.log(err)
+          throw('HospitalInfo could not be found')
+        }else {
+          console.log(res)
+          return res
+        }
+      })
+      resolve(h)
+    })
+    return new Promise(resolve => {
+      resolve(hospital)
+    })
+  } catch (error) {
+    return new Promise((resolve, reject) => {
+      reject(error)
+    })
+  }
+}
+
 
 const makeHospital = async (id, name, state, county, longitude, latitude, supplies, telephone="") => {
   try {
@@ -82,5 +111,6 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
 
 module.exports = {
   getHospital: getHospital,
+  getHospitalInfo: getHospitalInfo,
   makeHospital: makeHospital
 }

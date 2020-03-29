@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectID;
 const helper = require('../util/util');
 const User = require('../database/models/user')
 
-router.post('/',(req, res) => {
+router.post('/signup',(req, res) => {
   console.log('user signup');
   //const { username, password, firstName, lastName, profileImage, email, phoneNumber, roles} = req.body
   console.log(req.body);
@@ -19,13 +19,13 @@ router.post('/',(req, res) => {
       })
     }
     else {
-      console.log("now adding the user...")
-      const hospital = await helper.getHospital()
-      
+      const hospitalId = parseInt(req.body.hospitalId)
+      const hospital = await helper.getHospital(hospitalId)
+      console.log(hospital)
       const newUser = new User({
         username: username,
         password: password,
-        hospital: hospital
+        hospitalId: parseInt(hospital._id)
       })
       console.log('New User:', newUser);
       newUser.save((err, savedUser) => {
@@ -39,6 +39,22 @@ router.post('/',(req, res) => {
     }
   })
 })
+
+router.post(
+  '/login',
+  function (req, res, next) {
+    console.log('routes/user.js, login, req.body: ');
+    console.log(req.body)
+    next()
+  },
+  passport.authenticate('local'),
+  (req, res) => {
+    console.log('logged in', req.user);
+    var userInfo = req.user
+    console.log("userinfo: ", userInfo);
+    res.send(userInfo);
+  }
+)
 
 router.post('/logout', (req, res) => {
   if (req.user) {

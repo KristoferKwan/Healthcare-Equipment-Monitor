@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import {
   Avatar,
   Button,
@@ -48,7 +49,27 @@ export default function SignUp() {
     setValues(prev => ({...prev, [key]: value}))
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try{
+      console.log(values.userId);
+      axios.post('/api/user/signup', {
+        username: values.userId,
+        password: values.password,
+        hospitalId: values.hospitalId
+      }).then(response => {
+        if (response.username) {
+          // update App.js state
+          // update the state to redirect to home
+          window.location = '/info/'
+        }
+      }).catch(error => {
+        window.alert(error)
+      })
+    } catch(error){
+
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -67,6 +88,7 @@ export default function SignUp() {
                 autoComplete="hospitalId"
                 name="hospitalId"
                 variant="outlined"
+                type="number"
                 required
                 fullWidth
                 id="hospitalId"

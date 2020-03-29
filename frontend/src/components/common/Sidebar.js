@@ -14,8 +14,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital'
 import { NavLink } from 'react-router-dom'
 
-import { useUserContext } from '../../contexts/UserContext'
-
 const drawerWidth = 240
 
 const useStyles = makeStyles(theme => ({
@@ -48,9 +46,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Sidebar({ open, onToggleDoor }) {
+export default function Sidebar({ open, onToggleDoor, user }) {
   const classes = useStyles()
-  const [user, _] = useUserContext()
   const links = [
     {
       to: !!user.hospitalId ? `/info/${user.hospitalId}` : '/sign-in',

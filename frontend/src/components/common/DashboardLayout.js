@@ -1,10 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
-import {
-  Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-  Map as MapIcon
-} from '@material-ui/icons'
+import MenuIcon from '@material-ui/icons/Menu'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import MapIcon from '@material-ui/icons/Map'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import {
   AppBar,
   CssBaseline,
@@ -20,6 +19,7 @@ import { useToggle } from 'react-use'
 
 import { useUserContext } from '../../contexts/UserContext'
 import Sidebar from './Sidebar'
+import AccountButton from './AccountButton'
 
 const drawerWidth = 240
 
@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     paddingRight: 24 // keep right padding when drawer closed
+  },
+  toolbarButton: {
+    color: theme.palette.common.white
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -100,17 +103,26 @@ export default function DashboardLayout({ children }) {
           >
             Healthcare Equipment Monitor
           </Typography>
+
+          <IconButton
+            component={Link}
+            to={'/sign-in'}
+            className={classes.toolbarButton}
+          >
+            <AccountCircleIcon />
+          </IconButton>
+          <AccountButton />
+
           <IconButton
             component={Link}
             to={'/map'}
-            color={'inherit'}
-            className={classes.menuButton}
+            className={classes.toolbarButton}
           >
             <MapIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Sidebar open={open} onToggleDoor={handleToggleDrawer} />
+      <Sidebar user={user} open={open} onToggleDoor={handleToggleDrawer} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <div className={classes.container}>{children}</div>

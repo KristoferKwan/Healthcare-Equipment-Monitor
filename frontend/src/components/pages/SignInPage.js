@@ -52,7 +52,7 @@ export default function SignInPage() {
   const [user, setUser] = useUserContext()
 
   useEffect(() => {
-    if (!!user && !!user.hospitalId) {
+    if (user.loggedIn) {
       history.push(`/info/${user.hospitalId}`)
     }
   }, [])
@@ -60,8 +60,10 @@ export default function SignInPage() {
   useEffect(() => {
     if (!state.loading && !state.error && !!state.value) {
       let { username, hospitalId } = state.value
-      setUser({ username, hospitalId })
-      console.log(user)
+      setUser(prev => {
+        console.log({ username, hospitalId })
+        return { ...prev, username, hospitalId, loggedIn: true }
+      })
       history.push(`/info/${hospitalId}`)
     } else {
       console.log(state)

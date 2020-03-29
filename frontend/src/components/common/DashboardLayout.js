@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
     }),
     width: theme.spacing(7),
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9)
+      width: theme.spacing(7)
     }
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -83,8 +83,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto'
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    padding: theme.spacing(4)
   },
   paper: {
     padding: theme.spacing(2),
@@ -153,7 +152,7 @@ export default function DashboardLayout({
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container className={classes.container}>{children}</Container>
+        <div className={classes.container}>{children}</div>
       </main>
     </div>
   )

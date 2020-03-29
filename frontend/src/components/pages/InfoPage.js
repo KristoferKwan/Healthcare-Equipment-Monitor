@@ -22,7 +22,7 @@ export default function InfoPage() {
       <Box paddingBottom={3}>
         <Typography variant={'h4'}>Hospital ID: {id}</Typography>
       </Box>
-      <Grid item container xs={12} md={6}>
+      <Grid item container xs={12} md={4}>
         {!!hospitalInfo && !!hospitalInfo.supplies && (
           <SupplyTable supplyEntry={hospitalInfo.supplies[0]} />
         )}

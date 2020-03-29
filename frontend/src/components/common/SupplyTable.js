@@ -31,10 +31,10 @@ export default function SupplyTable({ supplyEntry }) {
         <Grid item xs={12}>
           <Grid container spacing={4} justify={'space-between'}>
             <Grid item xs={8} md={'auto'}>
-              <Typography variant={'h5'}>{label}</Typography>
+              <Typography variant={'h6'}>{label}</Typography>
             </Grid>
             <Grid item>
-              <Typography variant={'h6'}>{supplyEntry[key]}</Typography>
+              <Typography variant={'body1'}>{supplyEntry[key]}</Typography>
             </Grid>
           </Grid>
         </Grid>

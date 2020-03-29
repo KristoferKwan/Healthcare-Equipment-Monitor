@@ -13,6 +13,10 @@ axios
     console.log(response.data.features[0]);
     for (var x = 0; x < response.data.features.length; ++x) {
       const jsonEntry = x * 7;
+      supplies = [];
+      for (var supplyX = jsonEntry; jsonEntry + 7; ++supplyX) {
+        supplies.push(json[supplyX]);
+      }
       axios.post("http://localhost:8080/utils/makeHospital", {
         body: {
           id: json[jsonEntry].id,
@@ -22,16 +26,7 @@ axios
           state: response.data.features[x].properties.STATE,
           county: response.data.features[x].properties.COUNTY,
           telephone: response.data.features[x].properties.TELEPHONE,
-          supplies: {
-            timestamp: new Date(json[jsonEntry].timestamp),
-            ventilators: json[jsonEntry].ventilators,
-            beds: json[jsonEntry].beds,
-            goggles: json[jsonEntry].goggles,
-            gowns: json[jsonEntry].gowns,
-            masks: json[jsonEntry].masks,
-            nprs: json[jsonEntry].nprs,
-            gloves: json[jsonEntry].gloves
-          }
+          supplies: supplies
         }
       });
     }

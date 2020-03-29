@@ -1,5 +1,6 @@
 const Hospital = require('../database/models/hospital')
 const HospitalInfo = require('../database/models/hospitalInfo')
+const County = require('../database/models/county')
 
 const getHospital = async (id) => {
   try {
@@ -146,7 +147,45 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
   }
 }
 
+
+const makeCounties = async (name, location, cases) => {
+  /* Write your code to make your county object and push to mongodb here (follow the makeHospital function for a guideline)
+    Schema (for reference): 
+      name: { type: String, unique: false, required: false },
+      countyId: {type: String, unique: true, required: true},
+      cases: {type: Number, unique: false, required: true, default: 0},
+      hospitals: [{
+          type: Schema.Types.ObjectId,
+          ref: 'HospitalInfo'
+      }],
+      location: {
+        longitude: {
+          type: Number,
+          unique: false,
+          required: true 
+        },
+        latitude: {
+          type: Number,
+          unique: false,
+          required: true
+        }
+      }
+  
+  */
+  console.log("coming soon!");
+}
+ 
+
+const getIBMCountyData = async () => {
+  /*Write your code to query for the IBM county data here */
+  //call makeCounties to create the county objects
+  console.log("coming soon!");
+}
+
+
 module.exports = {
+  makeCounties: makeCounties,
+  getIBMCountyData: getIBMCountyData,
   getHospital: getHospital,
   getAllHospitals: getAllHospitals,
   getHospitalInfo: getHospitalInfo,

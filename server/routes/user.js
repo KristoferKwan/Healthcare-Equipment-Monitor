@@ -25,7 +25,7 @@ router.post('/signup',(req, res) => {
       const newUser = new User({
         username: username,
         password: password,
-        hospital: hospital
+        hospital: hospital._id
       })
       console.log('New User:', newUser);
       newUser.save((err, savedUser) => {

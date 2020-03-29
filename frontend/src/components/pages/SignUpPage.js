@@ -51,7 +51,7 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('https://localhost:8080/api/user/signup', {
+    axios.post('/api/user/signup', {
       username: values.username,
       password: values.password,
       hospital: values.hospitalId

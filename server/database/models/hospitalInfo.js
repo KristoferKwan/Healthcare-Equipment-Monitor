@@ -34,7 +34,13 @@ const hospitalInfoSchema = new Schema({
       default: 0,
       min: 0
     },
-    eyewear: {
+    goggles: {
+      type: Number,
+      unique: false,
+      default: 0,
+      min: 0
+    },
+    goggles: {
       type: Number,
       unique: false,
       default: 0,

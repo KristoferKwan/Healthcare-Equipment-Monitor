@@ -6,7 +6,7 @@ import {
   Marker,
 } from "google-maps-react";
 import Hospital from "./Hospital";
-import Axios from "axios";
+import axios from "axios";
 
 const style = {
   width: "100%",
@@ -43,11 +43,11 @@ export class MapContainer extends React.Component {
     //   }, 3000
     // );
 
-    Axios.get("/hospitals")
+    axios.get("/api/hospital")
         .then(response => {
           const hospitals = response.data.map(hospital =>
               new Hospital(
-                  hospital._id,
+                  hospital.hospitalId,
                   hospital.name,
                   hospital.location.latitude,
                   hospital.location.longitude

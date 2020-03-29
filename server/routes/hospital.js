@@ -5,10 +5,7 @@ const User = require('../database/models/user')
 
 router.get('/', async (req, res) => {
   try {
-    return res.json({
-      status: 'success',
-      message: 'hospital route is currently in progress..'
-    })
+    return res.json(await helper.getAllHospitals())
   } catch (error) {
     res.status(404)
     return res.json(error)

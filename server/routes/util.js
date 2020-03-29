@@ -5,7 +5,7 @@ const hospitalHelper = require("../requests/publicHealthDepartments");
 //const json = require("../mockdata/hospitalData.json");
 var fs = require("fs");
 //console.log(json);
-var json = JSON.parse(fs.readFileSync("../mockdata/hospitalData.json", "utf8"));
+//var json = JSON.parse(fs.readFileSync("../mockdata/hospitalData.json", "utf8"));
 router.get("/hospitalHelper", async (req, res) => {
   try {
     hospitalHelper.getPublicHealthDepartments(json);

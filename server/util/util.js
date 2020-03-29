@@ -25,6 +25,43 @@ const getHospital = async (id) => {
   }
 }
 
+const getAllHospitals = async () => {
+  try {
+    const hospital = await new Promise((resolve, reject) => {
+      Hospital.find({}, async (err, hospitals) => {
+        if (err) {
+          console.log(err)
+          throw('Hospitals could not be found')
+        }else {
+          var hospitalMap = []
+          console.log(hospitals)
+          await new Promise((resolve) => { 
+            hospitals.forEach((hospital) => {
+              const hospitalInfo = {
+                hospitalId: hospital._id,
+                name: hospital.name,
+                location: hospital.location      
+              }
+              hospitalMap.push(hospitalInfo)
+              console.log(hospitalMap)
+            })
+          resolve()
+         })
+          console.log("here!", hospitalMap)
+          resolve(hospitalMap)
+        }
+      })
+    })
+    return new Promise(resolve => {
+      resolve(hospital)
+    })
+  } catch (error) {
+    return new Promise((resolve, reject) => {
+      reject(error)
+    })
+  }
+}
+
 const getHospitalInfo = async (id) => {
   try {
     console.log(id);
@@ -111,6 +148,7 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
 
 module.exports = {
   getHospital: getHospital,
+  getAllHospitals: getAllHospitals,
   getHospitalInfo: getHospitalInfo,
   makeHospital: makeHospital
 }

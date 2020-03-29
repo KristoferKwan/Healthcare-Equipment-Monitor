@@ -6,9 +6,10 @@ mongoose.promise = Promise
 // Define userSchema
 const hospitalInfoSchema = new Schema({
   name: { type: String, unique: true, required: false },
-  state: { type: String, unique: true, required: true },
-  county: { type: String, unique: true, required: true },
-  telephone: { type: String, unique: true, required: false },
+  hospitalId: { type: String, unique: true, required: false },
+  state: { type: String, unique: false, required: true },
+  county: { type: String, unique: false, required: true },
+  telephone: { type: String, unique: false, required: false },
   supplies: [{
     timestamp: {
       type: Date,

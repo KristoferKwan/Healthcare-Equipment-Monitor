@@ -151,7 +151,8 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
 const makeCounties = async (name, location, cases) => {
   /* Write your code to make your county object and push to mongodb here (follow the makeHospital function for a guideline)
     Schema (for reference): 
-      name: { type: String, unique: true, required: false },
+      name: { type: String, unique: false, required: false },
+      countyId: {type: String, unique: true, required: true},
       cases: {type: Number, unique: false, required: true, default: 0},
       hospitals: [{
           type: Schema.Types.ObjectId,

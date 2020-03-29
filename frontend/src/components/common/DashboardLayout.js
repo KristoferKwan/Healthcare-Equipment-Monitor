@@ -1,14 +1,11 @@
 import React from 'react'
 import clsx from 'clsx'
 import MenuIcon from '@material-ui/icons/Menu'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import MapIcon from '@material-ui/icons/Map'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import {
   AppBar,
   CssBaseline,
-  Divider,
-  Drawer,
   IconButton,
   Toolbar,
   Typography
@@ -73,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function DashboardLayout({ children }) {
   const classes = useStyles()
-  const [user, setUser] = useUserContext()
+  const user = useUserContext()[0]
   const [open, handleToggleDrawer] = useToggle(true)
 
   return (
@@ -104,13 +101,6 @@ export default function DashboardLayout({ children }) {
             Healthcare Equipment Monitor
           </Typography>
 
-          <IconButton
-            component={Link}
-            to={'/sign-in'}
-            className={classes.toolbarButton}
-          >
-            <AccountCircleIcon />
-          </IconButton>
           <AccountButton />
 
           <IconButton

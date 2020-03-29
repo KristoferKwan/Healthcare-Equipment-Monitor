@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import {
   Avatar,
   Button,
   Container,
   CssBaseline,
   TextField,
-  Checkbox,
   Link,
   Grid,
   Typography
@@ -53,18 +51,17 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (user.loggedIn) {
+      console.log(user)
       history.push(`/info/${user.hospitalId}`)
     }
-  }, [])
+  }, [user])
 
   useEffect(() => {
     if (!state.loading && !state.error && !!state.value) {
       let { username, hospitalId } = state.value
       setUser(prev => {
-        console.log({ username, hospitalId })
         return { ...prev, username, hospitalId, loggedIn: true }
       })
-      history.push(`/info/${hospitalId}`)
     } else {
       console.log(state)
     }

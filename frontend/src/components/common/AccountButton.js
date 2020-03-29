@@ -1,18 +1,24 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { IconButton, Typography, Popover } from '@material-ui/core'
+import { IconButton, makeStyles, Menu, MenuItem } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { useUserContext } from '../../contexts/UserContext'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    color: 'inherit'
+  }
+}))
 
 export default function AccountButton() {
   const history = useHistory()
   const [user, _] = useUserContext()
+  const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleOnClick = event => {
     if (user.loggedIn) {
-      console.log('l')
       setAnchorEl(event.currentTarget)
     } else {
       history.push('/sign-in')
@@ -23,22 +29,26 @@ export default function AccountButton() {
     setAnchorEl(null)
   }
 
-  const AccountMenu = () => {
-    return (
-      <Popover
+  return (
+    <>
+      <IconButton className={classes.root} onClick={handleOnClick}>
+        <AccountCircleIcon />
+      </IconButton>
+      <Menu
         open={!!anchorEl}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'bottom'
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'right'
+        }}
       >
-        <Typography>{user.username}</Typography>
-      </Popover>
-    )
-  }
-
-  return (
-    <IconButton onClick={handleOnClick}>
-      <AccountCircleIcon />
-    </IconButton>
+        <MenuItem>Logout</MenuItem>
+      </Menu>
+    </>
   )
 }

@@ -1,8 +1,13 @@
 export default class Hospital {
-    constructor(name, latitude, longitude) {
+    constructor(id, name, latitude, longitude) {
+        this._id = id;
         this._name = name;
         this._latitude = latitude;
         this._longitude = longitude;
+    }
+
+    get id() {
+        return this._id;
     }
 
     get name() {

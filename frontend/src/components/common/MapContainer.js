@@ -4,9 +4,9 @@ import {
   InfoWindow,
   Map,
   Marker,
-  Coordinates
 } from "google-maps-react";
 import Hospital from "./Hospital";
+import Axios from "axios";
 
 export class MapContainer extends React.Component {
   constructor(props) {
@@ -20,19 +20,35 @@ export class MapContainer extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(
-      () =>
-        this.setState({
-          hospitals: this.state.hospitals.concat(
-            new Hospital("test", 42.02, -77.01)
-          )
-        }),
-      3000
-    );
+    // setTimeout(
+    //   () =>
+    //     this.setState({
+    //       hospitals: this.state.hospitals
+    //           .concat(new Hospital("location1", "test", 42.02, -77.01))
+    //           .concat(new Hospital("location2", "Example Hospital", 41.00, -77.01))
+    //     }),
+    //   3000
+    // );
+
+    Axios.get("/hospitals")
+        .then(response => {
+          this.setState({
+            hospitals: response.data.map(hospital =>
+                new Hospital(
+                    hospital._id,
+                    hospital.name,
+                    hospital.location.latitude,
+                    hospital.location.longitude
+                )
+            )
+          })
+        }, error => {
+          window.alert("Unable to load hospital locations. Please try again.")
+          console.log(error);
+        })
   }
 
   onMarkerHover(props, marker, e) {
-    console.log(props);
     if (!this.state.showingInfoWindow) {
       if (props !== this.state.selectedPlace) {
         this.setState({
@@ -45,7 +61,6 @@ export class MapContainer extends React.Component {
   }
 
   onMarkerHoverOut(props, marker, e) {
-    console.log(props);
     if (props !== this.state.selectedPlace) {
       this.setState({
         selectedPlace: {},
@@ -55,15 +70,29 @@ export class MapContainer extends React.Component {
     }
   }
 
+  onMarkerClick(props, marker, e) {
+    // https://github.com/fullstackreact/google-maps-react/issues/202
+    window.location =  window.location.origin.toString() + "/info/" + props.id;
+  }
+
   render() {
     return (
-      <Map google={this.props.google}>
+      <Map
+          google={this.props.google}
+          initialCenter={{
+            lat: 42.02,
+            lng: -77.01
+          }}
+      >
         {this.state.hospitals.map(hospital => (
           <Marker
-            key={hospital.name}
+            key={hospital.id}
+            id={hospital.id}
+            title={hospital.name}
             position={hospital.position}
             onMouseover={this.onMarkerHover.bind(this)}
             onMouseout={this.onMarkerHoverOut.bind(this)}
+            onClick={this.onMarkerClick.bind(this)}
           />
         ))}
 
@@ -72,7 +101,7 @@ export class MapContainer extends React.Component {
           visible={this.state.showingInfoWindow}
         >
           <div>
-            <h1>{this.state.selectedPlace.name}</h1>
+            <h1>{this.state.selectedPlace.title}</h1>
           </div>
         </InfoWindow>
       </Map>
@@ -81,5 +110,5 @@ export class MapContainer extends React.Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyBjSmWzmgK2NIHkBtYQ7GBcozEkt3T5Pn4"
+  apiKey: "AIzaSyCxEJO9cFv1Hm6-l65Wwf3xTehfYOUC5vs"
 })(MapContainer);

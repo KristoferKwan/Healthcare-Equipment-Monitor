@@ -1,11 +1,10 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Avatar,
   Button,
   Container,
   CssBaseline,
   TextField,
-  FormControlLabel,
   Checkbox,
   Link,
   Grid,
@@ -35,9 +34,21 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles()
 
+  const [values, setValues] = useState({
+    hospitalId: null,
+    userId: null,
+    password: null
+  })
+
+  const handleOnChange = key => event => {
+    let value = event.target.value
+    setValues(prev => ({...prev, [key]: value}))
+  }
+
+  const handleSubmit = () => {}
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -48,33 +59,50 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+        <form className={classes.form} onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="hospitalId"
+                name="hospitalId"
+                variant="outlined"
+                required
+                fullWidth
+                id="hospitalId"
+                label="Hospital Id"
+                autofocus
+                value={values.hospitalId}
+                onChange={handleOnChange('hospitalId')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="userId"
+                label="User Id"
+                name="userId"
+                autoComplete="userId"
+                value={values.userId}
+                onChange={handleOnChange('userId')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={values.password}
+                onChange={handleOnChange('password')}
+              />
+            </Grid>
+          </Grid>
           <Button
             type="submit"
             fullWidth
@@ -91,8 +119,8 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link href="/sign-up" variant="body2">
+                "Don't have an account? Sign Up"
               </Link>
             </Grid>
           </Grid>

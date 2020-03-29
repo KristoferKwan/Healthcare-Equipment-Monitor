@@ -14,15 +14,15 @@ const userSchema = new Schema({
   password: { type: String, unique: false, required: false },
 });
 
-// userSchema.methods = {
-//     checkPassword: function (inputPassword) {
-//       console.log("checking:", inputPassword);
-//     return bcrypt.compareSync(inputPassword, this.password)
-//   },
-//     hashPassword: plainTextPassword => {
-//     return bcrypt.hashSync(plainTextPassword, 10)
-//     }
-//   }
+userSchema.methods = {
+    checkPassword: function (inputPassword) {
+      console.log("checking:", inputPassword);
+    return bcrypt.compareSync(inputPassword, this.password)
+  },
+    hashPassword: plainTextPassword => {
+    return bcrypt.hashSync(plainTextPassword, 10)
+    }
+  }
 
 userSchema.pre('save', function (next) {
   if (!this.password) {

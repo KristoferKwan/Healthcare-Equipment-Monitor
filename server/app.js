@@ -12,13 +12,12 @@ const passport = require("./passport");
 const app = express();
 const PORT = 8080;
 // Route requires
-app.use(cors());
-app.options("*", cors());
-const server = http.createServer(app);
-const helper = require("./routes/util");
-const user = require("./routes/user");
-const hospital = require("./routes/hospital");
-const util = require("./routes/util");
+app.use(cors())
+app.options('*', cors())
+const server = http.createServer(app)
+const user = require('./routes/user')
+const hospital = require('./routes/hospital')
+const util = require('./routes/util')
 
 // MIDDLEWARE
 app.use(morgan("dev"));
@@ -44,9 +43,9 @@ app.use(passport.initialize());
 app.use(passport.session()); // calls the deserializeUser
 
 // Routes
-app.use("/api/user", user);
-app.use("/api/hospital", hospital);
-// app.use('/util', util)
+app.use('/api/user', user)
+app.use('/api/hospital', hospital)
+app.use('/api/util', util)
 
 // Starting Server
 server.listen(PORT, () => {

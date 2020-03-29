@@ -5,7 +5,8 @@ mongoose.promise = Promise
 
 // Define userSchema
 const hospitalSchema = new Schema({
-  name: { type: String, unique: true, required: false },
+  _id: { type: Number, unique: true, required: true },
+  name: { type: String, unique: true, required: true },
   location: {
     longitude: {
       type: Number,

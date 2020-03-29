@@ -9,12 +9,7 @@ passport.serializeUser((user, done) => {
 	console.log('---------')
 	const user_info = {
     _id: user._id,
-    profileImage: user.profileImage,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-		role: user.roles
+    hospitalID: user.hospitalID,
   } 
 	console.log("user stuff:",user_info);
 	done(null, user_info)

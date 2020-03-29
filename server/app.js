@@ -12,22 +12,12 @@ const passport = require("./passport");
 const app = express();
 const PORT = 8080;
 // Route requires
-<<<<<<< Updated upstream
-app.use(cors());
-app.options("*", cors());
-const server = http.createServer(app);
-const helper = require("./routes/util");
-const user = require("./routes/user");
-const hospital = require("./routes/hospital");
-const util = require("./routes/util");
-=======
 app.use(cors())
 app.options('*', cors())
 const server = http.createServer(app)
 const user = require('./routes/user')
 const hospital = require('./routes/hospital')
 const util = require('./routes/util')
->>>>>>> Stashed changes
 
 // MIDDLEWARE
 app.use(morgan("dev"));

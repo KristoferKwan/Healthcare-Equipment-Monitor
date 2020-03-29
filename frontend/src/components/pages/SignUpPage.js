@@ -1,15 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Avatar,
   Button,
+  Checkbox,
   Container,
   CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
-  Box,
   Typography
 } from '@material-ui/core'
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
@@ -38,6 +36,20 @@ const useStyles = makeStyles(theme => ({
 export default function SignUp() {
   const classes = useStyles()
 
+  const [values, setValues] = useState({
+    hospitalId: null,
+    userId: null,
+    password: null,
+    passwordConfirm: null
+  })
+
+  const handleOnChange = key => event => {
+    let value = event.target.value
+    setValues(prev => ({...prev, [key]: value}))
+  }
+
+  const handleSubmit = () => {}
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -48,29 +60,20 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="hospitalId"
+                name="hospitalId"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="hospitalId"
+                label="Hospital Id"
+                value={values.hospitalId}
+                onChange={handleOnChange('hospitalId')}
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
               />
             </Grid>
             <Grid item xs={12}>
@@ -78,10 +81,12 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="userId"
+                label="User ID"
+                name="userId"
+                autoComplete="userId"
+                value={values.userId}
+                onChange={handleOnChange('userId')}
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,12 +99,21 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={values.password}
+                onChange={handleOnChange('password')}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="passwordConfirm"
+                label="Confirm Password"
+                type="password"
+                id="passwordConfirm"
+                value={values.passwordConfirm}
+                onChange={handleOnChange('passwordConfirm')}
               />
             </Grid>
           </Grid>
@@ -109,12 +123,14 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={values.password !== values.passwordConfirm || !values.password }
+            onClick={console.log()}
           >
             Sign Up
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/sign-in" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

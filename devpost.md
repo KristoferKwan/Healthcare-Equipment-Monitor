@@ -39,7 +39,7 @@ If the app can gather the right data in terms of equipment availability and COVI
 
 The security of the application can be improved for user access and data integrity. The app contains sensitive information that pertains to the stock/inventory available at hospitals. Access to the app should be limited by license/account distributions per hospital or accounts created should utilize two-factor authentication/SSO to ensure that only those with permission may view the information. This also pertains to the manufacturers and distributors who wish to view the information. A formal request system should be implemented and different user account levels should be used to restrict manufacturers from editing data.
 
-On the topic of data, the validity and quality of the data that is stored onto the database should be maintained and secure. Third party services will need to be utilized to protect the user account usernames and passwords and maintain the data quality on the server. Non-authorized users should not be able to modify sensitive information.
+On the topic of data, the validity and quality of the data that is stored onto the database should be maintained and secure. Third party services will need to be utilized to protect the user account usernames and passwords. Non-authorized users should not be able to access/modify sensitive information.
 
 # Built With
 The frontend components were built using React.js and the backend consisted of Node.js in communication with the Mongodb server.

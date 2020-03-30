@@ -1,16 +1,16 @@
 import React from "react";
 import {
   GoogleApiWrapper,
-  InfoWindow,
   Map,
   Marker,
 } from "google-maps-react";
 import Hospital from "./Hospital";
 import axios from "axios";
+import MapInfoBox from "./MapInfoBox";
 
 const style = {
-  width: "100%",
-  height: "100%"
+  width: "80%",
+  height: "80%"
 };
 
 export class MapContainer extends React.Component {
@@ -19,9 +19,6 @@ export class MapContainer extends React.Component {
     const bounds = new this.props.google.maps.LatLngBounds();
     this.state = {
       hospitals: [],
-      showingInfoWindow: false,
-      activeMarker: {},
-      selectedPlace: {},
       bounds
     };
   }
@@ -67,31 +64,17 @@ export class MapContainer extends React.Component {
         });
   }
 
-  onMarkerHover(props, marker, e) {
-    if (!this.state.showingInfoWindow) {
-      if (props !== this.state.selectedPlace) {
-        this.setState({
-          selectedPlace: props,
-          activeMarker: marker,
-          showingInfoWindow: true
-        });
-      }
-    }
-  }
-
-  onMarkerHoverOut(props, marker, e) {
-    if (props !== this.state.selectedPlace) {
-      this.setState({
-        selectedPlace: {},
-        activeMarker: {},
-        showingInfoWindow: false
-      });
-    }
-  }
+  // onMarkerHover(props, marker, e) {
+  //   this.infoBox.current.onMarkerHover(props, marker, e);
+  // }
+  //
+  // onMarkerHoverOut(props, marker, e) {
+  //   this.infoBox.current.onMarkerHoverOut(props, marker, e);
+  // }
 
   onMarkerClick(props, marker, e) {
     // https://github.com/fullstackreact/google-maps-react/issues/202
-    window.location =  window.location.origin.toString() + "/info/" + props.id;
+    window.location = window.location.origin.toString() + "/info/" + props.id;
   }
 
   render() {
@@ -109,23 +92,11 @@ export class MapContainer extends React.Component {
           <Marker
             key={hospital.id}
             id={hospital.id}
-            title={hospital.name}
+            title={hospital.name + " (Click to see more info)"}
             position={hospital.position}
-            onMouseover={this.onMarkerHover.bind(this)}
-            onMouseout={this.onMarkerHoverOut.bind(this)}
             onClick={this.onMarkerClick.bind(this)}
           />
         ))}
-
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-        >
-          <div>
-            <h1>{this.state.selectedPlace.title}</h1>
-            Click for more info.
-          </div>
-        </InfoWindow>
       </Map>
     );
   }

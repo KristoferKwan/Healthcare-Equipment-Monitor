@@ -12,6 +12,15 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/info', async (req, res) => {
+  try {
+    return res.json(await helper.getAllHospitalsInfo())
+  } catch (error) {
+    res.status(404)
+    return res.json(error)
+  }
+})  
+
 
 router.get('/:id', async (req, res) => {
   try {

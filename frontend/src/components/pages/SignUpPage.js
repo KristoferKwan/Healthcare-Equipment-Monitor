@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
   Avatar,
   Button,
-  Checkbox,
   Container,
-  CssBaseline,
   TextField,
-  Link,
   Grid,
   Typography
 } from '@material-ui/core'
-import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { makeStyles } from '@material-ui/core/styles'
+import { useHistory, Link } from 'react-router-dom'
+import { useSignUp } from '../../functions/useAPI'
+import { useUserContext } from '../../contexts/UserContext'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,44 +36,50 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles()
+  const history = useHistory()
 
   const [values, setValues] = useState({
-    hospitalId: null,
-    userId: null,
-    password: null,
-    passwordConfirm: null
+    hospitalId: '',
+    username: '',
+    password: '',
+    passwordConfirm: ''
   })
+
+  const [signUpState, signUp] = useSignUp({
+    hospitalId: values.hospitalId,
+    username: values.username,
+    password: values.password
+  })
+  const [user, setUser] = useUserContext()
+
+  useEffect(() => {
+    if (user.loggedIn) {
+      console.log(user)
+      history.push(`/info/${user.hospitalId}`)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (!signUpState.loading && !signUpState.error && !!signUpState.value) {
+      let { username, hospitalId } = signUpState.value
+      setUser(prev => ({ ...prev, username, hospitalId, loggedIn: true }))
+    } else {
+      console.log(signUpState)
+    }
+  }, [signUpState])
 
   const handleOnChange = key => event => {
     let value = event.target.value
-    setValues(prev => ({...prev, [key]: value}))
+    setValues(prev => ({ ...prev, [key]: value }))
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    try{
-      console.log(values.userId);
-      axios.post('/api/user/signup', {
-        username: values.userId,
-        password: values.password,
-        hospitalId: values.hospitalId
-      }).then(response => {
-        if (response.username) {
-          // update App.js state
-          // update the state to redirect to home
-          window.location = '/info/'
-        }
-      }).catch(error => {
-        window.alert(error)
-      })
-    } catch(error){
-
-    }
+  const handleSubmit = event => {
+    event.preventDefault()
+    signUp()
   }
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -103,12 +109,12 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="userId"
-                label="User ID"
-                name="userId"
-                autoComplete="userId"
-                value={values.userId}
-                onChange={handleOnChange('userId')}
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                value={values.username}
+                onChange={handleOnChange('username')}
               />
             </Grid>
             <Grid item xs={12}>
@@ -145,14 +151,15 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={values.password !== values.passwordConfirm || !values.password }
-            onClick={console.log()}
+            disabled={
+              values.password !== values.passwordConfirm || !values.password
+            }
           >
             Sign Up
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/sign-in" variant="body2">
+              <Link to="/sign-in" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

@@ -5,7 +5,7 @@ mongoose.promise = Promise;
 
 // Define userSchema
 const hospitalInfoSchema = new Schema({
-  name: { type: String, unique: true, required: false },
+  name: { type: String, unique: false, required: false },
   hospitalId: { type: Number, unique: true, required: false },
   state: { type: String, unique: false, required: true },
   county: { type: String, unique: false, required: true },
@@ -42,6 +42,12 @@ const hospitalInfoSchema = new Schema({
         min: 0
       },
       gowns: {
+        type: Number,
+        unique: false,
+        default: 0,
+        min: 0
+      },
+      gloves: {
         type: Number,
         unique: false,
         default: 0,

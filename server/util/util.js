@@ -1,94 +1,92 @@
-const Hospital = require('../database/models/hospital')
-const HospitalInfo = require('../database/models/hospitalInfo')
-const County = require('../database/models/county')
+const Hospital = require("../database/models/hospital");
+const HospitalInfo = require("../database/models/hospitalInfo");
+const County = require("../database/models/county");
 
-const getHospital = async (id) => {
+const getHospital = async id => {
   try {
     console.log(id);
     const hospital = await new Promise((resolve, reject) => {
-      const h =Hospital.findOne({ _id: id }, (err, res) => {
+      const h = Hospital.findOne({ _id: id }, (err, res) => {
         if (!res) {
-          console.log(err)
-          throw('Hospital could not be found')
-        }else {
-          return res
+          console.log(err);
+          throw "Hospital could not be found";
+        } else {
+          return res;
         }
-      })
-      resolve(h)
-    })
+      });
+      resolve(h);
+    });
     return new Promise(resolve => {
-      resolve(hospital)
-    })
+      resolve(hospital);
+    });
   } catch (error) {
     return new Promise((resolve, reject) => {
-      reject(error)
-    })
+      reject(error);
+    });
   }
-}
+};
 
 const getAllHospitals = async () => {
   try {
     const hospital = await new Promise((resolve, reject) => {
       Hospital.find({}, async (err, hospitals) => {
         if (err) {
-          console.log(err)
-          throw('Hospitals could not be found')
-        }else {
-          var hospitalMap = []
-          console.log(hospitals)
-          await new Promise((resolve) => { 
-            hospitals.forEach((hospital) => {
+          console.log(err);
+          throw "Hospitals could not be found";
+        } else {
+          var hospitalMap = [];
+          await new Promise(resolve => {
+            hospitals.forEach(hospital => {
               const hospitalInfo = {
                 hospitalId: hospital._id,
                 name: hospital.name,
-                location: hospital.location      
-              }
-              hospitalMap.push(hospitalInfo)
-              console.log(hospitalMap)
-            })
-          resolve()
-         })
-          console.log("here!", hospitalMap)
-          resolve(hospitalMap)
+                location: hospital.location
+              };
+              hospitalMap.push(hospitalInfo);
+            });
+            resolve();
+          });
+          resolve(hospitalMap);
         }
-      })
-    })
+      });
+    });
     return new Promise(resolve => {
-      resolve(hospital)
-    })
+      resolve(hospital);
+    });
   } catch (error) {
     return new Promise((resolve, reject) => {
-      reject(error)
-    })
+      reject(error);
+    });
   }
-}
+};
 
-const getHospitalInfo = async (id) => {
+const getHospitalInfo = async id => {
   try {
     console.log(id);
     const hospital = await new Promise((resolve, reject) => {
-      console.log ("made it in here!")
-      const h =HospitalInfo.findOne({ hospitalId: id }, (err, res) => {
+      console.log("made it in here!");
+      const h = HospitalInfo.findOne({ hospitalId: id }, (err, res) => {
         if (!res) {
-          console.log(err)
-          throw('HospitalInfo could not be found')
-        }else {
-          console.log(res)
-          return res
+          console.log(err);
+          throw "HospitalInfo could not be found";
+        } else {
+          console.log(res);
+          return res;
         }
-      })
-      resolve(h)
-    })
+      });
+      resolve(h);
+    });
     return new Promise(resolve => {
-      resolve(hospital)
-    })
+      resolve(hospital);
+    });
   } catch (error) {
     return new Promise((resolve, reject) => {
-      reject(error)
-    })
+      reject(error);
+    });
   }
-}
+};
 
+<<<<<<< HEAD
 const getAllHospitalsInfo = async () => {
   try {
     const hospital = await new Promise((resolve, reject) => {
@@ -128,20 +126,32 @@ const getAllHospitalsInfo = async () => {
 
 
 const makeHospital = async (id, name, state, county, longitude, latitude, supplies, telephone="") => {
+=======
+const makeHospital = async (
+  id,
+  name,
+  state,
+  county,
+  longitude,
+  latitude,
+  supplies,
+  telephone = ""
+) => {
+>>>>>>> 46e50e10c683ddf3ad3e8cba6004b13f9c3c7e5a
   try {
     await new Promise((resolve, reject) => {
       Hospital.findOne({ _id: id }, (err, res) => {
         if (res) {
-          reject('Hospital Already Exists!')
+          reject("Hospital Already Exists!");
         } else {
-          resolve()
+          resolve();
         }
-      })
-    })
-    console.log("longitude", longitude)
-    console.log("latitude", latitude)
-    supplies["timestamp"] = Date.now()
-    console.log(supplies)
+      });
+    });
+    console.log("longitude", longitude);
+    console.log("latitude", latitude);
+    supplies["timestamp"] = Date.now();
+    console.log(supplies);
     hospitalInfo = new HospitalInfo({
       name: name,
       hospitalId: id,
@@ -149,15 +159,15 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
       county: county,
       telephone: telephone,
       supplies: supplies
-    })
-    console.log(hospitalInfo)
-    hospitalInfo.save( (err, savedhospitalInfo) => {
+    });
+    console.log(hospitalInfo);
+    hospitalInfo.save((err, savedhospitalInfo) => {
       if (err) {
-        console.log(err)
-        throw "Invalid Hospital Info"
+        console.log(err);
+        throw "Invalid Hospital Info";
       } else {
-        console.log("successfully saved the hospital")
-        console.log(savedhospitalInfo)
+        console.log("successfully saved the hospital");
+        console.log(savedhospitalInfo);
         hospital = new Hospital({
           _id: id,
           name: name,
@@ -166,24 +176,24 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
             latitude: latitude
           },
           hospitalInfo: savedhospitalInfo._id
-        })
-        hospital.save( (err, savedhospital) => {
+        });
+        hospital.save((err, savedhospital) => {
           if (err) {
-            console.log(err)
-            throw err
-        }})
+            console.log(err);
+            throw err;
+          }
+        });
       }
-    })
+    });
     return new Promise(resolve => {
-      resolve("SUCCESS")
-    })
+      resolve("SUCCESS");
+    });
   } catch (error) {
     return new Promise((resolve, reject) => {
-      reject(error)
-    })
+      reject(error);
+    });
   }
-}
-
+};
 
 const makeCounties = async (name, location, cases) => {
   /* Write your code to make your county object and push to mongodb here (follow the makeHospital function for a guideline)
@@ -210,15 +220,13 @@ const makeCounties = async (name, location, cases) => {
   
   */
   console.log("coming soon!");
-}
- 
+};
 
 const getIBMCountyData = async () => {
   /*Write your code to query for the IBM county data here */
   //call makeCounties to create the county objects
   console.log("coming soon!");
-}
-
+};
 
 module.exports = {
   makeCounties: makeCounties,
@@ -228,4 +236,4 @@ module.exports = {
   getAllHospitalsInfo: getAllHospitalsInfo,
   getHospitalInfo: getHospitalInfo,
   makeHospital: makeHospital
-}
+};

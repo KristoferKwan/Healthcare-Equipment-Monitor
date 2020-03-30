@@ -124,6 +124,29 @@ const getAllHospitalsInfo = async () => {
   }
 }
 
+const updateSupplies = async(id, supplies) => {
+  try{
+    if(!supplies.timestamp){
+      supplies["timestamp"] = Date.now()
+    }
+    HospitalInfo.findOneAndUpdate({ hospitalId: id }, {$addToSet: {supplies: supplies}}, {new: true}, (err, doc) => {
+      if (err) {
+        console.log(err)
+        throw("hospitalinfo not updated")
+      } else {
+      }
+    })
+    return new Promise((resolve, reject) => {
+      resolve("sucessfully updated!")
+    })
+  } catch(error) {
+    console.log(error)
+    return new Promise((resolve, reject) => {
+      reject(error)
+    })
+  }
+}
+
 
 const makeHospital = async (id, name, state, county, longitude, latitude, supplies, telephone="") => {
   try {
@@ -347,5 +370,6 @@ module.exports = {
   getAllHospitals: getAllHospitals,
   getAllHospitalsInfo: getAllHospitalsInfo,
   getHospitalInfo: getHospitalInfo,
-  makeHospital: makeHospital
+  makeHospital: makeHospital,
+  updateSupplies: updateSupplies
 };

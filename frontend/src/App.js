@@ -7,6 +7,7 @@ import MapPage from './components/pages/MapPage'
 import SignUpPage from './components/pages/SignUpPage'
 import SignInPage from './components/pages/SignInPage'
 import { UserContextProvider } from './contexts/UserContext'
+import DirectoryPage from './components/pages/DirectoryPage'
 
 const theme = createMuiTheme({
   props: {
@@ -28,6 +29,7 @@ export default function App() {
               <Switch>
                 <Route path={'/info/:id'} component={InfoPage} />
                 <Route path={'/map'} component={MapPage} />
+                <Route path={'/directory'} component={DirectoryPage} />
                 <Route path={'/sign-up'} component={SignUpPage} />
                 <Route path={'/sign-in'} component={SignInPage} />
               </Switch>

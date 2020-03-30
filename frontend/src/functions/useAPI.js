@@ -26,3 +26,11 @@ export const useSignUp = ({ hospitalId, username, password }) => {
     return data
   }, [hospitalId, username, password])
 }
+
+export const useAllHospitals = () => {
+  let url = `${API_URL_PREFIX}/hospital/info`
+  return useAsync(async () => {
+    let { data } = await axios.get(url)
+    return data
+  })
+}

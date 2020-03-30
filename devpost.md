@@ -6,20 +6,20 @@ The app was designed to help monitor the amount of healthcare equipment readily 
 
 The app has two main functions:
 1. > Healthcare providers can log and share between hospitals the amount of medical equipment and resources available at each hospital.
-2. > Healthcare providers can view a visualization of the density of COVID-19 cases in areas across the country on a county-by-county basis.
+2. > Manufacturers and healthcare equipment distributors can view a visualization of the density of COVID-19 cases in areas across the country on a county-by-county basis and the availability of equipment in each county.
 
-Together, the number of COVID-19 cases of the nearby counties and on-hand resources will allow healthcare professionals to gauge whether or not they are readily prepared or will require additonal aid and assistance from other hospitals or the federal governement and other providers of medical equipment and resources.
+Together, the number of COVID-19 cases of the nearby counties and on-hand resources will allow manufacturers and distriutors better streamline their supply chain efforts towards the areas that will see the biggest impact from an influx of supplies. Hospitals and also better understand the load to expect from their region and either request aid from neighboring hospitals or the federal government.
 
 # How I built it
 The app was broken into several parts that was developed in tandem.
-1. > User Signup and Login
-2. > Map of Hospitals in the Country
+1. > Hospital Registration
+2. > Mapping of Hospitals in the Country
 3. > Hospital Homepages for Displaying Day-to-Day Data
 4. > Data Acquisition, Generation, and Modification
 5. > Server Set-up to Store Hospital and User Data
 
 # Challenges I ran into
-The main challenge was in the initial data acquisition phase. There was not enough public information available in the form that was directly specific to our goals of tracking available healthcare resources. This is due to the fact that this app is determined to aggregate data that isn't normally shared between hospitals and the public. The initial sources for county data that was discovered were not from reliable sources with some containing malware. Filler values were generated for the availability numbers at each hospital. 
+The main challenge was in the initial data acquisition phase. There was not enough public information available in the form that was directly specific to our goals of tracking available healthcare resources. This is due to the fact that this app is determined to aggregate data that isn't normally shared between hospitals and the public. The initial sources for county data that was discovered were not from reliable sources, with some containing malware. Filler values were generated for the availability numbers at each hospital. 
 # Accomplishments that I'm proud of
 
 # What I learned
@@ -32,12 +32,14 @@ The main challenge was in the initial data acquisition phase. There was not enou
 ## Owen
 
 ## Gary
-This was my first time working on a webapp so this whole experience has been really interesting. I was able to learn how the frontend communicated with the backend. I definitely enjoyed a lot of the simplicity built into React.js to make frontend design straightforward and intuitive. The features that I expected to exist existed which isn't super common.
+This was my first time working on a webapp so this whole experience has been really interesting.I definitely enjoyed a lot of the simplicity built into React.js to make frontend design straightforward and intuitive. The focus of the project helped to further improve my understanding of the issues that hospitals are currently facing and thinking critically about ways to alleviate some of the issues.
 
 # What's next for Healthcare-Equipment-Monitor
 If the app can gather the right data in terms of equipment availability and COVID-19 cases by county, it can be expected that more helpful representations and use cases for the data to be developed. Some ideas is a data interpolation/machine learning algorithm that would look at the COVID-19 cases and equipment avalability to determine how to best distribute resources to tackle the virus.
 
-The security of the application can be improved for user access and data integrity. We do not want the usernames and passwords of our users to be leaked because this may allow non-authorized users to modify sensitive information. This goes the same way for securing the connection between the application and the server.
+The security of the application can be improved for user access and data integrity. The app contains sensitive information that pertains to the stock/inventory available at hospitals. Access to the app should be limited by license/account distributions per hospital or accounts created should utilize two-factor authentication/SSO to ensure that only those with permission may view the information. This also pertains to the manufacturers and distributors who wish to view the information. A formal request system should be implemented and different user account levels should be used to restrict manufacturers from editing data.
+
+On the topic of data, the validity and quality of the data that is stored onto the database should be maintained and secure. Third party services will need to be utilized to protect the user account usernames and passwords. Non-authorized users should not be able to access/modify sensitive information.
 
 # Built With
 The frontend components were built using React.js and the backend consisted of Node.js in communication with the Mongodb server.

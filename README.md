@@ -36,4 +36,4 @@ To run the docker image
 1. clone the repository
 2. > `cd docker/compose/split`
 3. > `docker-compose up --build`
-4. > Open `localhost:3000`
+4. > Open `localhost`

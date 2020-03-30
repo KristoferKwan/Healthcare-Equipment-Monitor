@@ -31,3 +31,9 @@ To start the backend server:
 2. > `npm install`
 3. > `npm install -g nodemon`
 4. > `npm run start`
+
+To run the docker image
+1. clone the repository
+2. > `cd docker/compose/split`
+3. > `docker-compose up --build`
+4. > Open `localhost:3000`

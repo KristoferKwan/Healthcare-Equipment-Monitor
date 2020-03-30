@@ -10,7 +10,7 @@ services:
       dockerfile: docker/image/hem-frontend/Dockerfile
     image: hem/frontend:${HEM_IMAGE_TAG:-latest}
     ports:
-      - 3000:3000
+      - 80:80
 
   hem-server:
     hostname: hem-server

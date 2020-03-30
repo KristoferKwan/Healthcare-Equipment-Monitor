@@ -50,8 +50,7 @@ export default function InfoPage() {
         })
     }}
     onHospitalInfo()
-  }, [hospitalInfo]
-  )
+  }, [hospitalInfo])
 
   useEffect(()=> {
     console.log("new data!", data)
@@ -65,7 +64,8 @@ export default function InfoPage() {
 
   const toggleChartData = (fieldname) => {
     console.log("toggling to", fieldname)
-    setFieldname(fieldname)
+    setFieldname(fieldname) 
+    
   }
 
   return (

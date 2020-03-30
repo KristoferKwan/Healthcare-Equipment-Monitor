@@ -209,49 +209,28 @@ const makeCounties = async (name, location, cases) => {
   */
   try {
     await new Promise((resolve, reject) => {
-      County.findOne({ _id: id }, (err, res) => {
+      County.findOne({ countyId: name }, (err, res) => {
         if (res) {
-          reject("Hospital Already Exists!");
+          reject("County Already Exists!");
         } else {
           resolve();
         }
       });
     });
-    console.log("longitude", longitude);
-    console.log("latitude", latitude);
-    supplies["timestamp"] = Date.now();
-    console.log(supplies);
-    hospitalInfo = new HospitalInfo({
+    const county = new County({
       name: name,
-      hospitalId: id,
-      state: state,
-      county: county,
-      telephone: telephone,
-      supplies: supplies
+      countyId: name,
+      cases: cases,
+      location: {
+        longitude: location.lng,
+        latitude: location.lat
+      }
     });
     console.log(hospitalInfo);
-    hospitalInfo.save((err, savedhospitalInfo) => {
-      if (err) {
+    county.save((err, savedInfo) => {
+      if(err) {
         console.log(err);
-        throw "Invalid Hospital Info";
-      } else {
-        console.log("successfully saved the hospital");
-        console.log(savedhospitalInfo);
-        hospital = new Hospital({
-          _id: id,
-          name: name,
-          location: {
-            longitude: longitude,
-            latitude: latitude
-          },
-          hospitalInfo: savedhospitalInfo._id
-        });
-        hospital.save((err, savedhospital) => {
-          if (err) {
-            console.log(err);
-            throw err;
-          }
-        });
+        throw "Invalid County Info";
       }
     });
     return new Promise(resolve => {
@@ -321,12 +300,11 @@ const getIBMCountyData = async () => {
     const makeCountyFromData = (dataEntry) => {
       const pt = dataEntry.pt;
       const countyName = stateCounty[pt[2]].t[1].d;
-      const uniqueId = stateCounty[pt[2]].t[0].d + "->" + countyName;
       const lat = latitudes[pt[0]].t[0].u;
       const lng = longitudes[pt[1]].t[0].u
       const cases = pt[3].v;
 
-      makeCounties(countyId, countyName, {lat, lng}, cases);
+      makeCounties(countyName, {lat, lng}, cases);
     };
     data.forEach(entry => makeCountyFromData(entry));
 

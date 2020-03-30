@@ -12,4 +12,4 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY ./server/package.json /app/package.json
 RUN npm install --silent
 COPY ./server /app
-RUN npm run build
+RUN npm run start

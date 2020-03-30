@@ -57,15 +57,16 @@ export default function InfoPage() {
   }, [data])
 
   useEffect(()=>{
-    createChartData(fieldname, hospitalInfo.supplies).then((result) => {
-      setData(result)
-    })
+    if(hospitalInfo !== null){
+      createChartData(fieldname, hospitalInfo.supplies).then((result) => {
+        setData(result)
+      })
+    }
   }, [fieldname])
 
-  const toggleChartData = (fieldname) => {
-    console.log("toggling to", fieldname)
-    setFieldname(fieldname) 
-    
+  const toggleChartData = (fname) => {
+    console.log("toggling to", fname)
+    setFieldname(fname) 
   }
 
   return (

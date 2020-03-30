@@ -36,7 +36,7 @@ export default function SupplyTable({ supplyEntry, toggleChartData }) {
         <ListItem key={key} button onClick={() => toggleChartData(key)}>
           <Grid item xs={12} key={key}>
             <Grid container spacing={4} justify={'space-between'}>
-              <Grid item xs={8} md={'auto'}>
+              <Grid item>
                 <Typography variant={'h6'}>{label}</Typography>
               </Grid>
               <Grid item>

@@ -3,9 +3,6 @@ const express = require("express");
 const router = express.Router();
 const hospitalHelper = require("../requests/publicHealthDepartments");
 
-const StreamArray = require("stream-json/streamers/StreamArray");
-const path = require("path");
-const fs = require("fs");
 
 //const json = require("../mockdata/hospitalData.json");
 //var fs = require("fs");

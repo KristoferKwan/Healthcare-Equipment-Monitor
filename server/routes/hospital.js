@@ -19,7 +19,19 @@ router.get('/info', async (req, res) => {
     res.status(404)
     return res.json(error)
   }
-})  
+}) 
+
+router.post('/update/:id', async (req, res) => {
+  try {
+    await helper.updateSupplies(req.params.id, req.body.supplies)
+    return res.json({
+      status: "success!!"
+    })
+  } catch (error) {
+    res.status(404)
+    return res.json(error)
+  }
+})
 
 
 router.get('/:id', async (req, res) => {

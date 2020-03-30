@@ -86,7 +86,6 @@ const getHospitalInfo = async id => {
   }
 };
 
-<<<<<<< HEAD
 const getAllHospitalsInfo = async () => {
   try {
     const hospital = await new Promise((resolve, reject) => {
@@ -104,6 +103,7 @@ const getAllHospitalsInfo = async () => {
                 state: hospital.state,
                 county: hospital.county,
                 telephone: hospital.telephone,
+                supplies: hospital.supplies
               }
               hospitalMap.push(hospitalInfo)
             })
@@ -125,18 +125,6 @@ const getAllHospitalsInfo = async () => {
 
 
 const makeHospital = async (id, name, state, county, longitude, latitude, supplies, telephone="") => {
-=======
-const makeHospital = async (
-  id,
-  name,
-  state,
-  county,
-  longitude,
-  latitude,
-  supplies,
-  telephone = ""
-) => {
->>>>>>> 46e50e10c683ddf3ad3e8cba6004b13f9c3c7e5a
   try {
     await new Promise((resolve, reject) => {
       Hospital.findOne({ _id: id }, (err, res) => {

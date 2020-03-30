@@ -1,12 +1,8 @@
 import React from "react";
-import {
-  GoogleApiWrapper,
-  InfoWindow,
-  Map,
-  Marker,
-} from "google-maps-react";
+import { GoogleApiWrapper, InfoWindow, Map, Marker } from "google-maps-react";
 import Hospital from "./Hospital";
 import axios from "axios";
+//import logo from "../../assets/mapIcon.png";
 
 const style = {
   width: "100%",
@@ -17,12 +13,20 @@ export class MapContainer extends React.Component {
   constructor(props) {
     super(props);
     const bounds = new this.props.google.maps.LatLngBounds();
+    const icon = {
+      url:
+        "https://oi1108.photobucket.com/albums/h402/cfaluyi/output-onlinepngtools%201.png", //"../../assets/mapIcon.png", // url
+      scaledSize: new this.props.google.maps.Size(8, 8), // size
+      origin: new this.props.google.maps.Point(0, 0), // origin
+      anchor: new this.props.google.maps.Point(0, 0) // anchor
+    };
     this.state = {
       hospitals: [],
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-      bounds
+      bounds,
+      icon
     };
   }
 
@@ -43,28 +47,36 @@ export class MapContainer extends React.Component {
     //   }, 3000
     // );
 
-    axios.get("/api/hospital")
-        .then(response => {
-          const hospitals = response.data.map(hospital =>
-              new Hospital(
-                  hospital.hospitalId,
-                  hospital.name,
-                  hospital.location.latitude,
-                  hospital.location.longitude
-              )
-          );
+    axios.get("/api/hospital").then(
+      response => {
+        const hospitals = response.data.map(
+          hospital =>
+            new Hospital(
+              hospital.hospitalId,
+              hospital.name,
+              hospital.location.latitude,
+              hospital.location.longitude
+            )
+        );
 
-          const newBounds = new this.props.google.maps.LatLngBounds();
-          hospitals.forEach(hospital => newBounds.extend({lat: hospital.position.lat, lng: hospital.position.lng}));
+        const newBounds = new this.props.google.maps.LatLngBounds();
+        hospitals.forEach(hospital =>
+          newBounds.extend({
+            lat: hospital.position.lat,
+            lng: hospital.position.lng
+          })
+        );
 
-          this.setState({
-            hospitals,
-            bounds: newBounds
-          });
-        }, error => {
-          window.alert("Unable to load hospital locations. Please try again.");
-          console.log(error);
+        this.setState({
+          hospitals,
+          bounds: newBounds
         });
+      },
+      error => {
+        window.alert("Unable to load hospital locations. Please try again.");
+        console.log(error);
+      }
+    );
   }
 
   onMarkerHover(props, marker, e) {
@@ -91,19 +103,20 @@ export class MapContainer extends React.Component {
 
   onMarkerClick(props, marker, e) {
     // https://github.com/fullstackreact/google-maps-react/issues/202
-    window.location =  window.location.origin.toString() + "/info/" + props.id;
+    window.location = window.location.origin.toString() + "/info/" + props.id;
   }
 
   render() {
     return (
       <Map
-          google={this.props.google}
-          style={style}
-          initialCenter={{
-            lat: 42.02,
-            lng: -77.01
-          }}
-          bounds={this.state.bounds}
+        google={this.props.google}
+        style={style}
+        initialCenter={{
+          lat: 42.02,
+          lng: -77.01
+        }}
+        maxZoom={15}
+        minZoom={5}
       >
         {this.state.hospitals.map(hospital => (
           <Marker
@@ -114,12 +127,32 @@ export class MapContainer extends React.Component {
             onMouseover={this.onMarkerHover.bind(this)}
             onMouseout={this.onMarkerHoverOut.bind(this)}
             onClick={this.onMarkerClick.bind(this)}
+            icon={this.state.icon}
           />
-        ))}
+        ))
+        /*this.state.hospitals.map(hospital => (
+          <Circle
+            key={hospital.id}
+            id={hospital.id}
+            title={hospital.name}
+            center={hospital.position}
+            onMouseover={this.onMarkerHover.bind(this)}
+            onMouseout={this.onMarkerHoverOut.bind(this)}
+            onClick={this.onMarkerClick.bind(this)}
+            icon={this.state.icon}
+            strokeColor="transparent"
+            strokeOpacity={0}
+            strokeWeight={5}
+            fillColor="#FF0000"
+            fillOpacity={0.2}
+          />
+        ))*/
+        }
 
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
+          pixelOffset={new this.props.google.maps.Size(0, -5)}
         >
           <div>
             <h1>{this.state.selectedPlace.title}</h1>

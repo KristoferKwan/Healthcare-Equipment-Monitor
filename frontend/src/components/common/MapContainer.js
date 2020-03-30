@@ -123,6 +123,7 @@ export class MapContainer extends React.Component {
         >
           <div>
             <h1>{this.state.selectedPlace.title}</h1>
+            Click for more info.
           </div>
         </InfoWindow>
       </Map>

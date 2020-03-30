@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography, List, ListItem } from '@material-ui/core'
 
 const sections = [
   {
@@ -28,21 +28,25 @@ const sections = [
   }
 ]
 
-export default function SupplyTable({ supplyEntry }) {
+export default function SupplyTable({ supplyEntry, toggleChartData }) {
   return (
     <Grid container spacing={2}>
+      <List>
       {sections.map(({ label, key }) => (
-        <Grid item xs={12} key={key}>
-          <Grid container spacing={4} justify={'space-between'}>
-            <Grid item xs={8} md={'auto'}>
-              <Typography variant={'h6'}>{label}</Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant={'body1'}>{supplyEntry[key]}</Typography>
+        <ListItem key={key} button onClick={() => toggleChartData(key)}>
+          <Grid item xs={12} key={key}>
+            <Grid container spacing={4} justify={'space-between'}>
+              <Grid item xs={8} md={'auto'}>
+                <Typography variant={'h6'}>{label}</Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant={'body1'}>{supplyEntry[key]}</Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </ListItem>
       ))}
+      </List>
     </Grid>
   )
 }

@@ -5,7 +5,7 @@ const API_URL_PREFIX = '/api'
 
 export const useHospitalInfo = id => {
   let url = `${API_URL_PREFIX}/hospital/${id}`
-  return useAsync(async () => {
+  return useAsyncFn(async () => {
     let { data } = await axios.get(url)
     return data
   })
@@ -33,4 +33,12 @@ export const useAllHospitals = () => {
     let { data } = await axios.get(url)
     return data
   })
+}
+
+export const useUpdateHospitalSupplyState = (id, supplyState) => {
+  let url = `${API_URL_PREFIX}/hospital/update/${id}`
+  return useAsyncFn(async () => {
+    let { data } = await axios.post(url, supplyState)
+    return data
+  }, [supplyState])
 }

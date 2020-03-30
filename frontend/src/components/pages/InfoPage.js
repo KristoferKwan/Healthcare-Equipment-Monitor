@@ -2,9 +2,13 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { Grid, Typography, Box, Button } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
 
-import { useHospitalInfo } from '../../functions/useAPI'
+import {
+  useHospitalInfo,
+  useUpdateHospitalSupplyState
+} from '../../functions/useAPI'
 import SupplyTable from '../../components/common/SupplyTable'
 import BarChart from '../../components/common/Barchart'
+import LoadingWrapper from '../common/LoadingWrapper'
 import { keys } from '@material-ui/core/styles/createBreakpoints'
 
 const data = [
@@ -24,17 +28,22 @@ const createChartData = (selectedField, supplies) => {
 export default function InfoPage() {
   let { id } = useParams()
 
-  const state = useHospitalInfo(id)
+  const [hospitalInfoRes, dispatchInfoReq] = useHospitalInfo(id)
   const [hospitalInfo, setHospitalInfo] = useState(null)
   const [data, setData] = useState([])
   const [selectedField, setFieldname] = useState('ventilators')
   const [supplyEntry, setSupplyEntry] = useState({})
+  const [updateResponse, dispatchUpdate] = useUpdateHospitalSupplyState(id)
 
   useEffect(() => {
-    if (!state.loading && !state.error) {
-      setHospitalInfo({ ...state.value })
+    dispatchInfoReq()
+  }, [])
+
+  useEffect(() => {
+    if (!hospitalInfoRes.loading && !hospitalInfoRes.error) {
+      setHospitalInfo({ ...hospitalInfoRes.value })
     }
-  }, [state])
+  }, [hospitalInfoRes])
 
   useEffect(() => {
     if (!!hospitalInfo && !!hospitalInfo.supplies) {
@@ -69,32 +78,45 @@ export default function InfoPage() {
     }
   }, [hospitalInfo, supplyEntry])
 
+  const onSubmit = () => {
+    dispatchUpdate().then(() => {
+      console.log('dispatched')
+      dispatchInfoReq()
+    })
+  }
+
   return (
     <>
-      <Box paddingBottom={3}>
-        <Typography variant={'h4'}>Hospital ID: {id}</Typography>
-      </Box>
-      <Grid container spacing={8}>
-        <Grid container item xs={12}>
-          {!!hospitalInfo && !!hospitalInfo.supplies && (
-            <SupplyTable
-              supplyEntry={supplyEntry}
-              onChangeSelectedField={handleChangeSelectedField}
-              onChangeFieldValue={handleOnChangeFieldValue}
-            />
-          )}
-        </Grid>
-        <Grid container item xs={12}>
-          <Grid item xs={12}>
-            <Button disabled={!hasChanged} variant={'contained'}>
-              Submit changes
-            </Button>
+      <LoadingWrapper loading={!hospitalInfoRes || !!hospitalInfoRes.loading}>
+        <Box paddingBottom={3}>
+          <Typography variant={'h4'}>Hospital ID: {id}</Typography>
+        </Box>
+        <Grid container spacing={8}>
+          <Grid container item xs={12}>
+            {!!hospitalInfo && !!hospitalInfo.supplies && (
+              <SupplyTable
+                supplyEntry={supplyEntry}
+                onChangeSelectedField={handleChangeSelectedField}
+                onChangeFieldValue={handleOnChangeFieldValue}
+              />
+            )}
+          </Grid>
+          <Grid container item xs={12}>
+            <Grid item xs={12}>
+              <Button
+                disabled={!hasChanged}
+                variant={'contained'}
+                onClick={onSubmit}
+              >
+                Submit changes
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid container item xs={12}>
+            <BarChart data={data} fieldname={selectedField} />
           </Grid>
         </Grid>
-        <Grid container item xs={12}>
-          <BarChart data={data} fieldname={selectedField} />
-        </Grid>
-      </Grid>
+      </LoadingWrapper>
     </>
   )
 }

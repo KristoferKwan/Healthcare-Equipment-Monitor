@@ -18,3 +18,11 @@ export const useSignIn = ({ username, password }) => {
     return data
   }, [username, password])
 }
+
+export const useSignUp = ({ hospitalId, username, password }) => {
+  let url = `${API_URL_PREFIX}/user/signup`
+  return useAsyncFn(async () => {
+    let { data } = await axios.post(url, { hospitalId, username, password })
+    return data
+  }, [hospitalId, username, password])
+}

@@ -5,14 +5,12 @@ import {
   Container,
   CssBaseline,
   TextField,
-  Link,
   Grid,
   Typography
 } from '@material-ui/core'
-
-import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { makeStyles } from '@material-ui/core/styles'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 
 import { useSignIn } from '../../functions/useAPI'
 import { useUserContext } from '../../contexts/UserContext'
@@ -46,7 +44,7 @@ export default function SignInPage() {
     password: ''
   })
 
-  const [state, signIn] = useSignIn(values)
+  const [signInState, signIn] = useSignIn(values)
   const [user, setUser] = useUserContext()
 
   useEffect(() => {
@@ -57,15 +55,13 @@ export default function SignInPage() {
   }, [user])
 
   useEffect(() => {
-    if (!state.loading && !state.error && !!state.value) {
-      let { username, hospitalId } = state.value
-      setUser(prev => {
-        return { ...prev, username, hospitalId, loggedIn: true }
-      })
+    if (!signInState.loading && !signInState.error && !!signInState.value) {
+      let { username, hospitalId } = signInState.value
+      setUser(prev => ({ ...prev, username, hospitalId, loggedIn: true }))
     } else {
-      console.log(state)
+      console.log(signInState)
     }
-  }, [state])
+  }, [signInState])
 
   const handleOnChange = key => event => {
     let value = event.target.value
@@ -133,7 +129,7 @@ export default function SignInPage() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/sign-up" variant="body2">
+              <Link to="/sign-up" variant="body2">
                 "Don't have an account? Sign Up"
               </Link>
             </Grid>

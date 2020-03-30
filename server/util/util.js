@@ -104,7 +104,6 @@ const getAllHospitalsInfo = async () => {
                 state: hospital.state,
                 county: hospital.county,
                 telephone: hospital.telephone,
-                supplies: hospital.supplies
               }
               hospitalMap.push(hospitalInfo)
             })

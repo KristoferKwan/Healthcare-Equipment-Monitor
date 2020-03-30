@@ -183,7 +183,7 @@ const makeHospital = async (id, name, state, county, longitude, latitude, suppli
   }
 };
 
-const makeCounties = async (name, location, cases) => {
+const makeCounties = async (id, name, location, cases) => {
   /* Write your code to make your county object and push to mongodb here (follow the makeHospital function for a guideline)
     Schema (for reference): 
       name: { type: String, unique: false, required: false },
@@ -209,7 +209,7 @@ const makeCounties = async (name, location, cases) => {
   */
   try {
     await new Promise((resolve, reject) => {
-      County.findOne({ countyId: name }, (err, res) => {
+      County.findOne({ countyId: id }, (err, res) => {
         if (res) {
           reject("County Already Exists!");
         } else {
@@ -219,14 +219,13 @@ const makeCounties = async (name, location, cases) => {
     });
     const county = new County({
       name: name,
-      countyId: name,
+      countyId: id,
       cases: cases,
       location: {
         longitude: location.lng,
         latitude: location.lat
       }
     });
-    console.log(hospitalInfo);
     county.save((err, savedInfo) => {
       if(err) {
         console.log(err);
@@ -249,6 +248,8 @@ const getIBMCountyData = async () => {
   // const confirmedColId = "id_1535107331";
   // const tableId = "Query1_0_1";
   // const resultLimit = 3000;
+
+  // https://accelerator.weather.com/bi/v1/datasets/iB7A1F6ED41154125B004AE3E3E276E3B/data?type=module&refreshmd=false&qfb=none&querySpec=%7B%22version%22%3A%221%22%2C%22dataItems%22%3A%5B%7B%22id%22%3A%22id_999552067%22%2C%22itemId%22%3A%22Query1_0_1.Lat%22%7D%2C%7B%22id%22%3A%22id_921329634%22%2C%22itemId%22%3A%22Query1_0_1.Long%22%7D%2C%7B%22id%22%3A%22id_1449760063%22%2C%22itemId%22%3A%22Query1_0_1.State_%22%7D%2C%7B%22id%22%3A%22id284255333%22%2C%22itemId%22%3A%22Query1_0_1.County%22%7D%2C%7B%22id%22%3A%22latlongLocations.caption%22%2C%22nest%22%3A%5B%22id_1449760063%22%2C%22id284255333%22%5D%7D%2C%7B%22id%22%3A%22id1030134541%22%2C%22itemId%22%3A%22Query1_0_1.Confirmed%22%2C%22aggregate%22%3A%22sum%22%7D%2C%7B%22id%22%3A%22id_1600758246%22%2C%22itemId%22%3A%22Query1_0_1.Confirmed%22%2C%22aggregate%22%3A%22sum%22%7D%5D%2C%22projections%22%3A%5B%22id_999552067%22%2C%22id_921329634%22%2C%22latlongLocations.caption%22%2C%22id1030134541%22%2C%22id_1600758246%22%5D%2C%22limit%22%3A30000%2C%22queryHints%22%3A%7B%22preferredModelItems%22%3A%5B%22Query1_0_1.Date_%22%2C%22Query1_0_1.Confirmed%22%2C%22Query1_0_1.Country%22%2C%22Query1_0_1.County%22%2C%22Query1_0_1.State_%22%5D%2C%22dataCacheExpiry%22%3A%223600%22%2C%22metadataSubsetIDs%22%3A%5B%22Query1_0_2.Country_Region%22%2C%22Query1_0_3.Confirmed%22%2C%22Query1_0_3.Confirmed_Cases%22%2C%22Query1_0_2.Country_Region_Sovereignty%22%2C%22Statistics_DS_Status_1.Total_%22%2C%22Statistics_DS_Status_1.Lat%22%2C%22Statistics_DS_Status_1.Long%22%2C%22Query1_0_2.Region_Cleaned%22%2C%22Statistics_DS_Status_1.Province_State_1%22%2C%22Query1_0.Confirmed_Cases%22%2C%22Query1_0.Death_Cases%22%2C%22Statistics_DS_Status.Total_%22%2C%22Statistics_DS_Status.Date_%22%2C%22Query1_0_3_1.Confirmed%22%2C%22Query1_0_3_1.Confirmed_Cases%22%2C%22Query1_0_3_1.Deaths%22%2C%22Query1_0_3_1.Death_Cases%22%2C%22Query1_0_3_1.i_Deaths%22%2C%22Query1_0.Date_%22%2C%22Query1_0.Deaths%22%2C%22Query1_0.Confirmed%22%2C%22Statistics_DS_Filtered.Confirmed%22%2C%22Statistics_DS_Filtered.Days_Since_Country_First_Infection%22%2C%22Query1_0_1.State_%22%2C%22Query1_0_1.County%22%2C%22Query1_0_1.Confirmed%22%2C%22Query1_0_1.Lat%22%2C%22Query1_0_1.Long%22%2C%22Query1_0_1.Date_%22%2C%22Query1_0_3_1.Date_%22%2C%22Statistics_DS_Status_1.Date_%22%2C%22Query1_0_1.Country%22%5D%7D%2C%22filters%22%3A%5B%7B%22type%22%3A%22pre%22%2C%22expression%22%3A%7B%22operator%22%3A%22in%22%2C%22itemId%22%3A%22Query1_0_1.Date_%22%2C%22values%22%3A%5B%22Query1_0_1.Date_-%3E%5B2020-03-29%5D%22%5D%7D%7D%5D%7D
 
   const total_data = "%7B%22version%22%3A%221%22%2C%22dataItems%22%3A%5B%7B%22id%22%3A%22id_999552067%22%2C%22itemId%22%3A%22Query1_0_1.Lat%22%7D%2C%7B%22id%22%3A%22id_921329634%22%2C%22itemId%22%3A%22Query1_0_1.Long%22%7D%2C%7B%22id%22%3A%22id_1449760063%22%2C%22itemId%22%3A%22Query1_0_1.State_%22%7D%2C%7B%22id%22%3A%22id284255333%22%2C%22itemId%22%3A%22Query1_0_1.County%22%7D%2C%7B%22id%22%3A%22latlongLocations.caption%22%2C%22nest%22%3A%5B%22id_1449760063%22%2C%22id284255333%22%5D%7D%2C%7B%22id%22%3A%22id1030134541%22%2C%22itemId%22%3A%22Query1_0_1.Confirmed%22%2C%22aggregate%22%3A%22sum%22%7D%2C%7B%22id%22%3A%22id_1600758246%22%2C%22itemId%22%3A%22Query1_0_1.Confirmed%22%2C%22aggregate%22%3A%22sum%22%7D%5D%2C%22projections%22%3A%5B%22id_999552067%22%2C%22id_921329634%22%2C%22latlongLocations.caption%22%2C%22id1030134541%22%2C%22id_1600758246%22%5D%2C%22limit%22%3A30000%2C%22queryHints%22%3A%7B%22preferredModelItems%22%3A%5B%22Query1_0_1.Date_%22%2C%22Query1_0_1.Confirmed%22%2C%22Query1_0_1.Country%22%2C%22Query1_0_1.County%22%2C%22Query1_0_1.State_%22%5D%2C%22dataCacheExpiry%22%3A%223600%22%2C%22metadataSubsetIDs%22%3A%5B%22Query1_0_2.Country_Region%22%2C%22Query1_0_3.Confirmed%22%2C%22Query1_0_3.Confirmed_Cases%22%2C%22Query1_0_2.Country_Region_Sovereignty%22%2C%22Statistics_DS_Status_1.Total_%22%2C%22Statistics_DS_Status_1.Lat%22%2C%22Statistics_DS_Status_1.Long%22%2C%22Query1_0_2.Region_Cleaned%22%2C%22Statistics_DS_Status_1.Province_State_1%22%2C%22Query1_0.Confirmed_Cases%22%2C%22Query1_0.Death_Cases%22%2C%22Statistics_DS_Status.Total_%22%2C%22Statistics_DS_Status.Date_%22%2C%22Query1_0_3_1.Confirmed%22%2C%22Query1_0_3_1.Confirmed_Cases%22%2C%22Query1_0_3_1.Deaths%22%2C%22Query1_0_3_1.Death_Cases%22%2C%22Query1_0_3_1.i_Deaths%22%2C%22Query1_0.Date_%22%2C%22Query1_0.Deaths%22%2C%22Query1_0.Confirmed%22%2C%22Statistics_DS_Filtered.Confirmed%22%2C%22Statistics_DS_Filtered.Days_Since_Country_First_Infection%22%2C%22Query1_0_1.State_%22%2C%22Query1_0_1.County%22%2C%22Query1_0_1.Confirmed%22%2C%22Query1_0_1.Lat%22%2C%22Query1_0_1.Long%22%2C%22Query1_0_1.Date_%22%2C%22Query1_0_3_1.Date_%22%2C%22Statistics_DS_Status_1.Date_%22%2C%22Query1_0_1.Country%22%5D%7D%2C%22filters%22%3A%5B%7B%22type%22%3A%22pre%22%2C%22expression%22%3A%7B%22operator%22%3A%22in%22%2C%22itemId%22%3A%22Query1_0_1.Date_%22%2C%22values%22%3A%5B%22Query1_0_1.Date_-%3E%5B2020-03-29%5D%22%5D%7D%7D%5D%7D";
   // Latitude, Longitude, (County, State), Confirmed, Confirmed (again??)
@@ -290,8 +291,8 @@ const getIBMCountyData = async () => {
       }
     });
 
-    const index_values = cases.dataItems;
-    const data = cases.data;
+    const index_values = cases.data.dataItems;
+    const data = cases.data.data;
 
     const latitudes = index_values[0].items;
     const longitudes = index_values[1].items;
@@ -300,11 +301,12 @@ const getIBMCountyData = async () => {
     const makeCountyFromData = (dataEntry) => {
       const pt = dataEntry.pt;
       const countyName = stateCounty[pt[2]].t[1].d;
+      const countyId = stateCounty[pt[2]].t[0].d + countyName;
       const lat = latitudes[pt[0]].t[0].u;
-      const lng = longitudes[pt[1]].t[0].u
+      const lng = longitudes[pt[1]].t[0].u;
       const cases = pt[3].v;
 
-      makeCounties(countyName, {lat, lng}, cases);
+      makeCounties(countyId, countyName, {lat, lng}, cases);
     };
     data.forEach(entry => makeCountyFromData(entry));
 

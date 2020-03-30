@@ -15,14 +15,13 @@
 
 
 FROM node:13-alpine3.10
-EXPOSE 8080 3000
+EXPOSE 8080
 
 LABEL maintainer="Mitchell Farrow, Owen Xie, Covenant Faluyi, Gary Xu, Kristofer Kwan"
 LABEL description="Sample NodeJS API Application"
 
 WORKDIR /app
 # Install the application
-COPY . .
 
 # build environment
 FROM node:12.2.0-alpine as build

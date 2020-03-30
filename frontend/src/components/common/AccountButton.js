@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { IconButton, makeStyles, Menu, MenuItem } from '@material-ui/core'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import { useUserContext } from '../../contexts/UserContext'
+import { useUserContext, getLogoutState } from '../../contexts/UserContext'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -12,17 +12,23 @@ const useStyles = makeStyles(theme => ({
 
 export default function AccountButton() {
   const history = useHistory()
-  const [user, _] = useUserContext()
+  const [user, setUser] = useUserContext()
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleOnClick = event => {
-    if (user.loggedIn) {
-      setAnchorEl(event.currentTarget)
-    } else {
-      history.push('/sign-in')
-    }
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleLogout = () => {
+    setUser(prev => ({ ...prev, ...getLogoutState() }))
+    handleClose()
+  }
+
+  const handleSignIn = () => {
+    history.push('/sign-in')
+    handleClose()
   }
 
   const handleClose = () => {
@@ -47,7 +53,11 @@ export default function AccountButton() {
           horizontal: 'right'
         }}
       >
-        <MenuItem>Logout</MenuItem>
+        {user.loggedIn ? (
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        ) : (
+          <MenuItem onClick={handleSignIn}>Sign in</MenuItem>
+        )}
       </Menu>
     </>
   )

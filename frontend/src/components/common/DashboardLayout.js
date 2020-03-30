@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { useToggle } from 'react-use'
 
-import { useUserContext } from '../../contexts/UserContext'
+import { useUserContext, getLogoutState} from '../../contexts/UserContext'
 import Sidebar from './Sidebar'
 import AccountButton from './AccountButton'
 

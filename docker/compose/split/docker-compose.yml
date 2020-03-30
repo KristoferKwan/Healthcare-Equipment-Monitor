@@ -1,0 +1,23 @@
+version: '3'
+services:
+  hem-frontend:
+    hostname: hem-frontend
+    container_name: hem-frontend
+    depends_on:
+      - hem-server
+    build:
+      context: ../../..
+      dockerfile: docker/image/hem-frontend/Dockerfile
+    image: hem/frontend:${HEM_IMAGE_TAG:-latest}
+    ports:
+      - 3000:3000
+
+  hem-server:
+    hostname: hem-server
+    container_name: hem-server
+    build:
+      context: ../../..
+      dockerfile: docker/image/hem-server/Dockerfile
+    image: hem/server:${HEM_IMAGE_TAG:-latest}
+    ports:
+      - 8080:8080

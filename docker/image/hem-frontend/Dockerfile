@@ -1,11 +1,12 @@
 # hem-frontend
 
-LABEL maintainer="Mitchell Farrow, Owen Xie, Covenant Faluyi, Gary Xu, Kristofer Kwan"
-LABEL description="Sample NodeJS API Application"
-
 # compile react code in a separate image
 FROM node:12-alpine as build
 WORKDIR /frontend
+
+LABEL maintainer="Mitchell Falkow, Owen Xie, Covenant Faluyi, Gary Xu, Kristofer Kwan"
+LABEL description="Sample NodeJS API Application"
+
 ENV PATH /frontend/node_modules/.bin:$PATH
 COPY frontend/package.json /frontend/package.json
 RUN npm install

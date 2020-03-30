@@ -1,7 +1,7 @@
 FROM node:13-alpine3.10
 EXPOSE 8080
 
-LABEL maintainer="Mitchell Farrow, Owen Xie, Covenant Faluyi, Gary Xu, Kristofer Kwan"
+LABEL maintainer="Mitchell Falkow, Owen Xie, Covenant Faluyi, Gary Xu, Kristofer Kwan"
 LABEL description="Sample NodeJS API Application"
 
 
@@ -13,4 +13,4 @@ COPY ./server/package.json /app/package.json
 RUN npm install --silent
 RUN npm install --silent nodemon
 COPY ./server /app
-RUN npm run start
+CMD ["npm", "run", "start"]

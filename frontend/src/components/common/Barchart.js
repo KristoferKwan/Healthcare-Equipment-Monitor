@@ -1,16 +1,32 @@
 import React from 'react'
 import { Link, Typography } from '@material-ui/core'
-import {BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar} from 'recharts' 
+import {
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+  ResponsiveContainer
+} from 'recharts'
 
-export default function Barchart({ data, fieldname }) {
+export default function Barchart({
+  data,
+  fieldname,
+  width = '80%',
+  height = 200
+}) {
   return (
-    <BarChart width={730} height={250} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey={fieldname} fill="#8884d8" />
-    </BarChart>
+    <ResponsiveContainer width={width} height={height}>
+      <BarChart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey={fieldname} fill="#8884d8" />
+      </BarChart>
+    </ResponsiveContainer>
   )
 }

@@ -1,90 +1,116 @@
-import React, { useEffect, useState } from 'react'
-import { Grid, Typography, Box } from '@material-ui/core'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState, useMemo } from 'react'
+import { Grid, Typography, Box, Button } from '@material-ui/core'
+import { useParams, useHistory } from 'react-router-dom'
 
-import { useHospitalInfo } from '../../functions/useAPI'
+import {
+  useHospitalInfo,
+  useUpdateHospitalSupply
+} from '../../functions/useAPI'
 import SupplyTable from '../../components/common/SupplyTable'
 import BarChart from '../../components/common/Barchart'
+import LoadingWrapper from '../common/LoadingWrapper'
 
-
-const data = [
-  {
-    name: "2020-03-29T21:47:48.673Z",
-    ventilators: 134
-  }
-]
-
-
-const createChartData = async (fieldname, supplies) => {
-  const result = supplies.map( (supply) => {
-    let datapoint = {}
-    datapoint['name'] = (new Date(supply.timestamp.toString())).toLocaleDateString('en-US');
-    datapoint[fieldname] = supply[fieldname]
-    return datapoint
-  })
-  console.log("result", result)
-  return result
-} 
-
+const createChartData = (selectedField, supplies) => {
+  return supplies.map(({ timestamp, ...supply }) => ({
+    name: new Date(timestamp.toString()).toLocaleDateString('en-US'),
+    [selectedField]: supply[selectedField]
+  }))
+}
 
 export default function InfoPage() {
   let { id } = useParams()
+  let history = useHistory()
 
-  const state = useHospitalInfo(id)
+  const [hospitalInfoRes, dispatchInfoReq] = useHospitalInfo(id)
   const [hospitalInfo, setHospitalInfo] = useState(null)
-  const [data, setData] = useState([
-  ])
-  const [fieldname, setFieldname] = useState("ventilators")
+  const [selectedField, setFieldname] = useState('ventilators')
+  const [supplyEntry, setSupplyEntry] = useState({})
+  const [updateResponse, dispatchUpdate] = useUpdateHospitalSupply(
+    id,
+    supplyEntry
+  )
+
+  const data = useMemo(() => {
+    if (!!hospitalInfo && !!hospitalInfo.supplies) {
+      return createChartData(selectedField, hospitalInfo.supplies)
+    } else {
+      return []
+    }
+  }, [hospitalInfo, selectedField])
 
   useEffect(() => {
-    if (!state.loading && !state.error) {
-      setHospitalInfo({ ...state.value })
-    }
-  }, [state])
+    dispatchInfoReq()
+  }, [])
 
-  useEffect(()=> {
-    const onHospitalInfo = () => {
-      if(hospitalInfo !== null){
-        createChartData(fieldname, hospitalInfo.supplies).then((result) => {
-          setData(result)
-        })
-    }}
-    onHospitalInfo()
+  useEffect(() => {
+    if (!hospitalInfoRes.loading && !hospitalInfoRes.error) {
+      setHospitalInfo({ ...hospitalInfoRes.value })
+    }
+  }, [hospitalInfoRes])
+
+  useEffect(() => {
+    if (!!hospitalInfo && !!hospitalInfo.supplies) {
+      setSupplyEntry(hospitalInfo.supplies[hospitalInfo.supplies.length - 1])
+    }
   }, [hospitalInfo])
 
-  useEffect(()=> {
-    console.log("new data!", data)
-  }, [data])
+  const handleChangeSelectedField = newSelectedField => {
+    setFieldname(newSelectedField)
+  }
 
-  useEffect(()=>{
-    if(hospitalInfo !== null){
-      createChartData(fieldname, hospitalInfo.supplies).then((result) => {
-        setData(result)
-      })
+  const handleOnChangeFieldValue = key => event => {
+    let value = event.target.value
+    setSupplyEntry(prev => ({ ...prev, [key]: value }))
+  }
+
+  const hasChanged = useMemo(() => {
+    if (!!hospitalInfo && !!hospitalInfo.supplies) {
+      return Object.entries(hospitalInfo.supplies[0])
+        .map(([k, v]) => v !== supplyEntry[k])
+        .reduce((prev, curr) => prev || curr, false)
+    } else {
+      return false
     }
-  }, [fieldname])
+  }, [hospitalInfo, supplyEntry])
 
-  const toggleChartData = (fname) => {
-    console.log("toggling to", fname)
-    setFieldname(fname) 
+  const onSubmit = () => {
+    dispatchUpdate().then(() => {
+      window.location = `/info/${id}`
+    })
   }
 
   return (
     <>
-      <Box paddingBottom={3}>
-        <Typography variant={'h4'}>Hospital ID: {id}</Typography>
-      </Box>
-      <Grid item container xs={12} sm={5}>
-        {!!hospitalInfo && !!hospitalInfo.supplies && (
-          <SupplyTable
-            supplyEntry={
-              hospitalInfo.supplies[0]
-            }
-            toggleChartData={(key)=>toggleChartData(key)}
-          />
-        )}
-        <BarChart data={data} fieldname={fieldname}/>
-      </Grid>
+      <LoadingWrapper loading={!hospitalInfoRes || !!hospitalInfoRes.loading}>
+        <Box paddingBottom={3}>
+          <Typography variant={'h4'}>Hospital ID: {id}</Typography>
+        </Box>
+        <Grid container spacing={8}>
+          <Grid container item xs={12}>
+            {!!hospitalInfo && !!hospitalInfo.supplies && (
+              <SupplyTable
+                supplyEntry={supplyEntry}
+                onChangeSelectedField={handleChangeSelectedField}
+                onChangeFieldValue={handleOnChangeFieldValue}
+              />
+            )}
+          </Grid>
+          <Grid container item xs={12}>
+            <Grid item xs={12}>
+              <Button
+                disabled={!hasChanged}
+                variant={'contained'}
+                onClick={onSubmit}
+              >
+                Submit changes
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid container item xs={12}>
+            <BarChart data={data} fieldname={selectedField} />
+          </Grid>
+        </Grid>
+      </LoadingWrapper>
     </>
   )
 }

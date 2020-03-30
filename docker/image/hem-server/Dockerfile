@@ -11,5 +11,6 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY ./server/package.json /app/package.json
 RUN npm install --silent
+RUN npm install --silent nodemon
 COPY ./server /app
 RUN npm run start
